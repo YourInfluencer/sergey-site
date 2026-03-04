@@ -1,26 +1,37 @@
 import { useState } from "react";
 
 export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
-  const [ok, setOk] = useState(false);
+  const [resultText, setResultText] = useState("");
+  const [sending, setSending] = useState(false);
 
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
+    setResultText("");
+
     const fd = new FormData(e.currentTarget);
     const payload = {
       name: String(fd.get("name") || ""),
       phone: String(fd.get("phone") || ""),
       comment: String(fd.get("comment") || ""),
     };
-    const res = onLeadSubmit(payload);
-    if (res) {
-      setOk(true);
-      e.currentTarget.reset();
+
+    try {
+      setSending(true);
+      const data = await onLeadSubmit(payload);
+      if (data?.ok) {
+        setResultText(`Спасибо! Заявка отправлена ✅ №${data.id}`);
+        e.currentTarget.reset();
+      }
+    } catch (err) {
+      console.error(err);
+      setResultText("Не удалось отправить. Проверь, что сервер запущен.");
+    } finally {
+      setSending(false);
     }
   }
 
   return (
     <>
-      {/* Главный якорь для “Лого/Главная” */}
       <section className="hero" id="home">
         <div className="wrap heroGrid">
           <div>
@@ -74,19 +85,6 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
         </div>
       </section>
 
-      <section className="section" id="how">
-        <div className="wrap">
-          <h2>Как мы работаем</h2>
-          <div className="steps">
-            <div className="step"><div className="stepNum">1</div><div><div className="stepTitle">Заявка</div><div className="muted">Звонок или сообщение.</div></div></div>
-            <div className="step"><div className="stepNum">2</div><div><div className="stepTitle">Диагностика</div><div className="muted">Понимаем причину и варианты.</div></div></div>
-            <div className="step"><div className="stepNum">3</div><div><div className="stepTitle">Согласование</div><div className="muted">Цена до начала работ.</div></div></div>
-            <div className="step"><div className="stepNum">4</div><div><div className="stepTitle">Решаем</div><div className="muted">Ремонт/настройка + проверка.</div></div></div>
-            <div className="step"><div className="stepNum">5</div><div><div className="stepTitle">Гарантия</div><div className="muted">На выполненные работы.</div></div></div>
-          </div>
-        </div>
-      </section>
-
       <section className="section" id="consult">
         <div className="wrap">
           <h2>Консультация</h2>
@@ -103,28 +101,22 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
         </div>
       </section>
 
-      {/* Развёрнутая обратная связь */}
       <section className="section" id="feedback">
         <div className="wrap">
           <h2>Оставьте заявку — мы перезвоним</h2>
           <div className="card">
-            <p className="muted">
-              Опишите проблему в двух словах — мы уточним детали и предложим решение.
-              (Сейчас это заглушка, позже подключим сервер.)
-            </p>
+            <p className="muted">Опишите проблему в двух словах — мы уточним детали и предложим решение.</p>
 
             <form className="leadForm" onSubmit={submit}>
               <input className="input" name="name" placeholder="Имя" autoComplete="name" />
               <input className="input" name="phone" placeholder="Телефон" autoComplete="tel" inputMode="tel" required />
               <textarea className="input" name="comment" placeholder="Что сломалось? (модель, симптомы)" rows={3} />
 
-              <button className="btn btnPrimary" type="submit">Отправить</button>
+              <button className="btn btnPrimary" type="submit" disabled={sending}>
+                {sending ? "Отправляем..." : "Отправить"}
+              </button>
 
-              {ok && (
-                <div className="sentOk">
-                  Спасибо! Заявка принята (пока в тестовом режиме). Можно также написать в Telegram/WhatsApp.
-                </div>
-              )}
+              {resultText && <div className="sentOk">{resultText}</div>}
             </form>
           </div>
         </div>

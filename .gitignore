@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# secrets
+.env
+server/.env
+
+# server deps
+server/node_modules
+
+# frontend deps/build
+node_modules
+dist

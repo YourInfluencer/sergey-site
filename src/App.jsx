@@ -20,7 +20,6 @@ function setTheme(theme) {
 }
 
 function scrollToHomeTopSmooth() {
-  // ждём, пока отрисуется главная, и скроллим к #home
   setTimeout(() => {
     const el = document.getElementById("home");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -34,19 +33,18 @@ export default function App() {
 
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "" });
-  const [sent, setSent] = useState(false);
+  const [sentText, setSentText] = useState(""); // текст успеха (с id)
+  const [sending, setSending] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => setTheme(theme), [theme]);
 
-  // Закрываем моб. меню при смене маршрута
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname, location.hash]);
 
-  // Esc закрывает всё
   useEffect(() => {
     function onKeyDown(e) {
       if (e.key === "Escape") {
@@ -59,47 +57,78 @@ export default function App() {
   }, []);
 
   function goHomeTop() {
-    // Если уже на главной — просто скроллим
     if (location.pathname === "/") {
       scrollToHomeTopSmooth();
       return;
     }
-    // Если на другой странице — переходим на главную и скроллим
     navigate("/");
     scrollToHomeTopSmooth();
   }
 
   function openContacts() {
-    setSent(false);
+    setSentText("");
     setIsContactsOpen(true);
   }
+
   function closeContacts() {
     setIsContactsOpen(false);
   }
 
-  function onSubmitModal(e) {
-    e.preventDefault();
-    console.log("LEAD (modal stub):", form);
-    setSent(true);
-    setForm({ name: "", phone: "" });
+  // ====== ОТПРАВКА НА БЭК ======
+  async function sendLead(payload) {
+    const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+    const resp = await fetch(`${API}/api/lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) {
+      const msg = data?.error || `HTTP_${resp.status}`;
+      throw new Error(msg);
+    }
+    return data; // { ok:true, id, ts }
   }
 
-  // Заглушка “отправки” с главной (позже будет fetch на сервер)
-  function onLeadSubmit(payload) {
-    console.log("LEAD (home stub):", payload);
-    return true;
+  // Отправка формы из модалки контактов
+  async function onSubmitModal(e) {
+    e.preventDefault();
+    try {
+      setSending(true);
+
+      const data = await sendLead({
+        name: form.name,
+        phone: form.phone,
+        comment: "",
+        source: "contacts_modal",
+      });
+
+      setForm({ name: "", phone: "" });
+      setSentText(`Заявка отправлена ✅ №${data.id}`);
+    } catch (err) {
+      console.error(err);
+      alert("Не удалось отправить. Проверь, что сервер запущен и VITE_API_URL верный.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  // Отправка с главной (Home.jsx ждёт ответ и покажет id)
+  async function onLeadSubmit(payload) {
+    const data = await sendLead({ ...payload, source: "home_form" });
+    return data; // передаём наверх (Home.jsx)
   }
 
   return (
     <>
       <header className="topbar">
         <div className="wrap topbarInner">
-          {/* Лого = главная = скролл к началу */}
           <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
             <div className="brandText">Лого</div>
           </button>
 
-          {/* Десктоп-меню */}
           <nav className="navDesktop" aria-label="Навигация">
             <button className="navLink navBtn" type="button" onClick={goHomeTop}>Главная</button>
             <a className="navLink" href="/#/call">Вызвать мастера</a>
@@ -119,7 +148,6 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Мобильная шапка */}
           <div className="navMobile">
             <button className="btn btnPrimary" type="button" onClick={openContacts}>Контакты</button>
 
@@ -145,11 +173,14 @@ export default function App() {
           </div>
         </div>
 
-        {/* Dropdown меню на мобилке */}
         {isMenuOpen && (
           <div className="mobileMenu" onMouseDown={() => setIsMenuOpen(false)}>
             <div className="wrap mobileMenuInner" onMouseDown={(e) => e.stopPropagation()}>
-              <button className="mobileLink mobileBtn" type="button" onClick={() => { setIsMenuOpen(false); goHomeTop(); }}>
+              <button
+                className="mobileLink mobileBtn"
+                type="button"
+                onClick={() => { setIsMenuOpen(false); goHomeTop(); }}
+              >
                 Главная
               </button>
 
@@ -207,7 +238,6 @@ export default function App() {
         />
       </Routes>
 
-      {/* Модалка контактов */}
       {isContactsOpen && (
         <div className="modalOverlay" role="dialog" aria-modal="true" onMouseDown={closeContacts}>
           <div className="modalCard" onMouseDown={(e) => e.stopPropagation()}>
@@ -247,21 +277,21 @@ export default function App() {
                 inputMode="tel"
                 required
               />
-              <button className="btn btnPrimary" type="submit">Отправить</button>
-              {sent && <div className="sentOk">Заявка отправлена (пока это заглушка).</div>}
+
+              <button className="btn btnPrimary" type="submit" disabled={sending}>
+                {sending ? "Отправляем..." : "Отправить"}
+              </button>
+
+              {sentText && <div className="sentOk">{sentText}</div>}
             </form>
           </div>
         </div>
       )}
-      {/* Мобильная нижняя панель CTA */}
-<div className="mobileBar">
-  <a className="btn btnPrimary mobileBarBtn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>
-    Позвонить
-  </a>
-  <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>
-    Контакты
-  </button>
-</div>
+
+      <div className="mobileBar">
+        <a className="btn btnPrimary mobileBarBtn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
+        <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>Контакты</button>
+      </div>
     </>
   );
 }
