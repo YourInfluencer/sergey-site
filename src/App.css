@@ -526,3 +526,76 @@ textarea.input{
   height:1px;
   opacity:0;
 }
+
+.pageTitle{ margin:0 0 10px; font-size:32px; line-height:1.05; }
+.miniList{ margin:0; padding-left:18px; color:var(--muted); display:grid; gap:6px; }
+
+/* ===== SERVICES PAGE ===== */
+.quickGrid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.quickBtn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  text-align:left;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--text);
+  font-weight: 900;
+  cursor:pointer;
+}
+
+.quickBtn:hover{
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.quickLabel{opacity:.95}
+.quickArrow{opacity:.55}
+
+@media (max-width: 520px){
+  .quickGrid{grid-template-columns:1fr}
+}
+
+.servicesGrid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.serviceCard2{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+}
+
+.serviceHead{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.serviceIcon2{font-size:22px}
+.serviceTitle2{font-weight: 900; font-size: 16px}
+
+.serviceList{
+  margin: 0;
+  padding-left: 18px;
+  display:grid;
+  gap: 8px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px){
+  .servicesGrid{grid-template-columns:1fr}
+}
