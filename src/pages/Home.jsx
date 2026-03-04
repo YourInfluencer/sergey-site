@@ -1,12 +1,54 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function digitsOnly(s) {
   return String(s || "").replace(/[^\d]/g, "");
 }
 
+const QUICK_ISSUES = [
+  "Телевизор не включается (индикатор / щелчки / мигает).",
+  "Телевизор: есть звук, нет изображения / темный экран.",
+  "Телевизор: проблемы с HDMI / не видит приставку.",
+  "Компьютер/ноутбук: тормозит / долго включается.",
+  "Компьютер/ноутбук: не включается / нет изображения.",
+  "Ноутбук: греется / шумит / выключается.",
+  "Принтер: не печатает / полосы / захватывает бумагу.",
+  "Принтер: не подключается по Wi-Fi / не видит ПК.",
+  "Wi-Fi: слабый сигнал / пропадает интернет / настройки роутера.",
+  "IP-камера: нет удалённого доступа / не пишет / не подключается.",
+];
+
 export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
   const [resultText, setResultText] = useState("");
   const [sending, setSending] = useState(false);
+
+  // состояние для комментария, чтобы мы могли “подставлять” текст кнопками
+  const [comment, setComment] = useState("");
+
+  // honeypot (ловушка для ботов) — человек не заполнит, бот часто заполнит
+  const [hp, setHp] = useState("");
+
+  // отметка времени открытия страницы — добавим в payload (позволяет отсеять “мгновенный” спам)
+  const [pageTs] = useState(() => Date.now());
+
+  const commentRef = useRef(null);
+
+  useEffect(() => {
+    // если comment меняется кнопками — ставим курсор в конец textarea
+    if (!commentRef.current) return;
+    commentRef.current.focus();
+    const el = commentRef.current;
+    const len = el.value.length;
+    el.setSelectionRange(len, len);
+  }, [comment]);
+
+  function addIssueText(text) {
+    setResultText("");
+    setComment((prev) => {
+      if (!prev) return text + "\n";
+      // если уже есть текст — аккуратно добавим новой строкой
+      return prev.trimEnd() + "\n" + text + "\n";
+    });
+  }
 
   async function submit(e) {
     e.preventDefault();
@@ -17,9 +59,11 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
       name: String(fd.get("name") || ""),
       phone: String(fd.get("phone") || ""),
       comment: String(fd.get("comment") || ""),
+      // антиспам поля:
+      hp: String(fd.get("hp") || ""), // honeypot
+      pageTs,
     };
 
-    // на всякий (у тебя ещё есть проверка в App.jsx)
     if (digitsOnly(payload.phone).length < 10) {
       setResultText("Введите телефон (минимум 10 цифр).");
       return;
@@ -31,10 +75,12 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
       if (data?.ok) {
         setResultText(`Спасибо! Заявка отправлена ✅ №${data.id}`);
         e.currentTarget.reset();
+        setComment("");
+        setHp("");
       }
     } catch (err) {
       console.error(err);
-      setResultText("Не удалось отправить. Проверь, что сервер запущен.");
+      setResultText("Не удалось отправить. Попробуйте ещё раз или нажмите «Контакты».");
     } finally {
       setSending(false);
     }
@@ -79,78 +125,45 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
         </div>
       </section>
 
-      {/* WHY TRUST */}
+      {/* QUICK ISSUES */}
+      <section className="section" id="issues">
+        <div className="wrap">
+          <h2>Частые проблемы</h2>
+          <p className="muted">Нажмите на подходящее — текст подставится в заявку ниже.</p>
+
+          <div className="issuesGrid">
+            {QUICK_ISSUES.map((t) => (
+              <button key={t} className="issueBtn" type="button" onClick={() => addIssueText(t)}>
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section" id="trust">
         <div className="wrap">
           <h2>Почему нам доверяют</h2>
-          <p className="muted">
-            Без сложных слов. Наша задача — чтобы вам было понятно, удобно и спокойно.
-          </p>
+          <p className="muted">Без сложных слов. Наша задача — чтобы вам было понятно, удобно и спокойно.</p>
 
           <div className="trustGrid">
             <div className="trustCard">
               <div className="trustIcon">✅</div>
               <div className="trustTitle">Цена до начала работ</div>
-              <div className="trustText">
-                Сначала диагностика и объяснение вариантов — потом решение. Без “сюрпризов” в конце.
-              </div>
+              <div className="trustText">Сначала диагностика и варианты — потом решение. Без сюрпризов.</div>
             </div>
 
             <div className="trustCard">
               <div className="trustIcon">🧾</div>
               <div className="trustTitle">Понятно объясняем</div>
-              <div className="trustText">
-                Говорим простыми словами: что сломалось, что можно сделать и сколько это будет стоить.
-              </div>
-            </div>
-
-            <div className="trustCard">
-              <div className="trustIcon">🛠️</div>
-              <div className="trustTitle">Решаем под ключ</div>
-              <div className="trustText">
-                Не только “починили”, но и проверили: интернет, обновления, приложения, печать, настройки.
-              </div>
-            </div>
-
-            <div className="trustCard">
-              <div className="trustIcon">⏱️</div>
-              <div className="trustTitle">Быстрое реагирование</div>
-              <div className="trustText">
-                Можно написать в Telegram/WhatsApp — часто уже по описанию понятно, куда копать.
-              </div>
+              <div className="trustText">Простыми словами: что сломалось и что можно сделать.</div>
             </div>
 
             <div className="trustCard">
               <div className="trustIcon">🛡️</div>
               <div className="trustTitle">Гарантия</div>
-              <div className="trustText">
-                На выполненные работы. Если вопрос по нашей части — разберёмся без нервов.
-              </div>
+              <div className="trustText">На выполненные работы. Если вопрос по нашей части — разберёмся.</div>
             </div>
-
-            <div className="trustCard">
-              <div className="trustIcon">🏠</div>
-              <div className="trustTitle">Дом и офис</div>
-              <div className="trustText">
-                Работаем и с домашней техникой, и с офисной: ПК, сеть, принтеры, камеры, ТВ.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="help">
-        <div className="wrap">
-          <h2>Чем помогаем</h2>
-          <div className="card">
-            <ul className="list">
-              <li><b>Телевизоры</b> — не включается, нет изображения/звука, подсветка, HDMI, Smart TV.</li>
-              <li><b>Компьютеры/ноутбуки</b> — тормозит, перегрев, не включается, ошибки, апгрейд, система.</li>
-              <li><b>Принтеры/МФУ</b> — не печатает/не сканирует, Wi-Fi, драйверы, подключение.</li>
-              <li><b>Wi-Fi/роутер</b> — слабый сигнал, обрывы, настройка сети.</li>
-              <li><b>IP-камеры</b> — настройка, удалённый доступ, запись.</li>
-              <li><b>Другая техника</b> — подскажем по модели/симптомам, стоит ли ремонтировать.</li>
-            </ul>
           </div>
         </div>
       </section>
@@ -175,12 +188,32 @@ export default function Home({ phone, tg, wa, onOpenContacts, onLeadSubmit }) {
         <div className="wrap">
           <h2>Оставьте заявку — мы перезвоним</h2>
           <div className="card">
-            <p className="muted">Опишите проблему в двух словах — мы уточним детали и предложим решение.</p>
+            <p className="muted">Опишите проблему — мы уточним детали и предложим решение.</p>
 
             <form className="leadForm" onSubmit={submit}>
               <input className="input" name="name" placeholder="Имя" autoComplete="name" />
               <input className="input" name="phone" placeholder="Телефон" autoComplete="tel" inputMode="tel" required />
-              <textarea className="input" name="comment" placeholder="Что сломалось? (модель, симптомы)" rows={3} />
+
+              {/* Honeypot: скрытое поле. Человек его не увидит. */}
+              <input
+                className="hp"
+                name="hp"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
+
+              <textarea
+                ref={commentRef}
+                className="input"
+                name="comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Что сломалось? (модель, симптомы)"
+                rows={3}
+              />
 
               <button className="btn btnPrimary" type="submit" disabled={sending}>
                 {sending ? "Отправляем..." : "Отправить"}

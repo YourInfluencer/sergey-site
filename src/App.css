@@ -486,3 +486,43 @@ textarea.input{
 @media (max-width: 520px){
   .trustGrid{ grid-template-columns: 1fr; }
 }
+
+/* ===== QUICK ISSUES ===== */
+.issuesGrid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.issueBtn{
+  text-align:left;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.issueBtn:hover{
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+@media (max-width: 900px){
+  .issuesGrid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px){
+  .issuesGrid{ grid-template-columns: 1fr; }
+}
+
+/* Honeypot — скрываем надёжно */
+.hp{
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  opacity:0;
+}

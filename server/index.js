@@ -4,13 +4,12 @@ import express from "express";
 const app = express();
 app.use(express.json({ limit: "100kb" }));
 
-// Разрешаем запросы с локалки и GitHub Pages
 app.use((req, res, next) => {
   const origin = req.headers.origin || "";
   const allowed = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
-    "https://yourinfluencer.github.io" // твой GitHub Pages домен
+    "https://yourinfluencer.github.io"
   ];
 
   if (allowed.includes(origin)) {
@@ -23,9 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/health", (req, res) => {
-  res.json({ ok: true });
-});
+app.get("/health", (req, res) => res.json({ ok: true }));
 
 async function sendToTelegram(text) {
   const token = process.env.TG_BOT_TOKEN;
@@ -43,26 +40,64 @@ async function sendToTelegram(text) {
   if (!data.ok) throw new Error(`Telegram error: ${JSON.stringify(data)}`);
 }
 
-// ID: DDMMYYHHmmss по Владивостоку (UTC+10)
+// ID: DDMMYYHHmm по Владивостоку (UTC+10)
 function leadIdVladivostok() {
-  const now = new Date(Date.now() + 10 * 60 * 60 * 1000); // UTC+10
+  const now = new Date(Date.now() + 10 * 60 * 60 * 1000);
   const dd = String(now.getUTCDate()).padStart(2, "0");
   const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
   const yy = String(now.getUTCFullYear()).slice(-2);
   const HH = String(now.getUTCHours()).padStart(2, "0");
   const Min = String(now.getUTCMinutes()).padStart(2, "0");
-  const ss = String(now.getUTCSeconds()).padStart(2, "0");
-  return `${dd}${mm}${yy}${HH}${Min}${ss}`;
+  return `${dd}${mm}${yy}${HH}${Min}`;
+}
+
+// ===== антиспам: rate limit in-memory =====
+// максимум 5 заявок за 10 минут + минимум 10 секунд между заявками с одного IP
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_IN_WINDOW = 5;
+const MIN_GAP_MS = 10 * 1000;
+
+const ipStore = new Map(); // ip -> { hits: number[], lastTs: number }
+
+function getIp(req) {
+  // если потом будет reverse proxy — можно подключить trust proxy и брать x-forwarded-for
+  return req.socket.remoteAddress || "unknown";
 }
 
 app.post("/api/lead", async (req, res) => {
   try {
+    const ip = getIp(req);
+    const now = Date.now();
+
+    // rate limit
+    const rec = ipStore.get(ip) || { hits: [], lastTs: 0 };
+    rec.hits = rec.hits.filter((t) => now - t < WINDOW_MS);
+
+    if (rec.lastTs && now - rec.lastTs < MIN_GAP_MS) {
+      return res.status(429).json({ ok: false, error: "TOO_FAST" });
+    }
+    if (rec.hits.length >= MAX_IN_WINDOW) {
+      return res.status(429).json({ ok: false, error: "RATE_LIMIT" });
+    }
+
+    // honeypot
+    const hp = String(req.body?.hp || "").trim();
+    if (hp) {
+      // бот заполнил скрытое поле — молча “ok”, чтобы не учился обходить
+      return res.json({ ok: true, id: leadIdVladivostok(), ts: Date.now() });
+    }
+
+    // анти-бот: слишком быстро после открытия страницы (если pageTs есть)
+    const pageTs = Number(req.body?.pageTs || 0);
+    if (pageTs && now - pageTs < 1200) {
+      return res.status(429).json({ ok: false, error: "TOO_FAST_PAGE" });
+    }
+
     const name = String(req.body?.name || "").trim().slice(0, 60);
     const phone = String(req.body?.phone || "").trim().slice(0, 40);
     const comment = String(req.body?.comment || "").trim().slice(0, 800);
     const source = String(req.body?.source || "site").trim().slice(0, 40);
 
-    // Минимальная проверка телефона
     const digits = phone.replace(/[^\d]/g, "");
     if (digits.length < 10) return res.status(400).json({ ok: false, error: "PHONE_INVALID" });
 
@@ -77,10 +112,15 @@ app.post("/api/lead", async (req, res) => {
 
     await sendToTelegram(text);
 
-    res.json({ ok: true, id: leadId, ts: Date.now() });
+    // записываем попытку
+    rec.hits.push(now);
+    rec.lastTs = now;
+    ipStore.set(ip, rec);
+
+    return res.json({ ok: true, id: leadId, ts: Date.now() });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ ok: false, error: "SERVER_ERROR" });
+    return res.status(500).json({ ok: false, error: "SERVER_ERROR" });
   }
 });
 
