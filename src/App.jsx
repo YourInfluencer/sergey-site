@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
+import { Link, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
+
+import Home from "./pages/Home.jsx";
+import Prices from "./pages/Prices.jsx";
 
 const PHONE = "+7 (914) 774-24-68";
 const TG = "https://t.me/SergejVladimirovichVDK";
-const WA = "https://wa.me/70000000000"; // оставляем заглушку
+const WA = "https://wa.me/70000000000"; // заглушка
 
 function getTheme() {
   const saved = localStorage.getItem("theme");
-  return saved === "dark" ? "dark" : "light"; // по умолчанию светлая
+  return saved === "dark" ? "dark" : "light";
 }
 
 function setTheme(theme) {
@@ -15,27 +19,97 @@ function setTheme(theme) {
   localStorage.setItem("theme", theme);
 }
 
+function scrollToHomeTopSmooth() {
+  // ждём, пока отрисуется главная, и скроллим к #home
+  setTimeout(() => {
+    const el = document.getElementById("home");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }, 0);
+}
+
 export default function App() {
   const [theme, setThemeState] = useState(getTheme());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const [isContactsOpen, setIsContactsOpen] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "" });
+  const [sent, setSent] = useState(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => setTheme(theme), [theme]);
+
+  // Закрываем моб. меню при смене маршрута
   useEffect(() => {
-    setTheme(theme);
-  }, [theme]);
+    setIsMenuOpen(false);
+  }, [location.pathname, location.hash]);
+
+  // Esc закрывает всё
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+        setIsContactsOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  function goHomeTop() {
+    // Если уже на главной — просто скроллим
+    if (location.pathname === "/") {
+      scrollToHomeTopSmooth();
+      return;
+    }
+    // Если на другой странице — переходим на главную и скроллим
+    navigate("/");
+    scrollToHomeTopSmooth();
+  }
+
+  function openContacts() {
+    setSent(false);
+    setIsContactsOpen(true);
+  }
+  function closeContacts() {
+    setIsContactsOpen(false);
+  }
+
+  function onSubmitModal(e) {
+    e.preventDefault();
+    console.log("LEAD (modal stub):", form);
+    setSent(true);
+    setForm({ name: "", phone: "" });
+  }
+
+  // Заглушка “отправки” с главной (позже будет fetch на сервер)
+  function onLeadSubmit(payload) {
+    console.log("LEAD (home stub):", payload);
+    return true;
+  }
 
   return (
     <>
       <header className="topbar">
-        <div className="wrap topbarRow">
-          <div className="logo">Лого</div>
+        <div className="wrap topbarInner">
+          {/* Лого = главная = скролл к началу */}
+          <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
+            <div className="brandText">Лого</div>
+          </button>
 
-          <nav className="nav">
-            <a href="#prices">Цены</a>
-            <a href="#consult">Консультация</a>
-            <a className="btn" href="#callback">Обратный звонок</a>
-            <a className="btn btnGhost" href="#call">Вызвать мастера</a>
+          {/* Десктоп-меню */}
+          <nav className="navDesktop" aria-label="Навигация">
+            <button className="navLink navBtn" type="button" onClick={goHomeTop}>Главная</button>
+            <a className="navLink" href="/#/call">Вызвать мастера</a>
+            <Link className="navLink" to="/prices">Цены</Link>
+            <a className="navLink" href="/#/consult">Консультация</a>
+
+            <button className="btn btnPrimary" type="button" onClick={openContacts}>Контакты</button>
 
             <button
-              className="btn btnGhost"
+              className="btnIcon"
               type="button"
               onClick={() => setThemeState(theme === "light" ? "dark" : "light")}
               aria-label="Переключить тему"
@@ -44,104 +118,150 @@ export default function App() {
               {theme === "light" ? "☀️" : "🌙"}
             </button>
           </nav>
-        </div>
 
-        <div className="wrap subRow">
-          <div className="muted">Работаем с 9:00 до 22:00 (UTC+10)</div>
-          <div className="links">
-            <a href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>{PHONE}</a>
-            <span className="dot">•</span>
-            <a href={TG} target="_blank" rel="noreferrer">Telegram</a>
-            <span className="dot">•</span>
-            <a href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
+          {/* Мобильная шапка */}
+          <div className="navMobile">
+            <button className="btn btnPrimary" type="button" onClick={openContacts}>Контакты</button>
+
+            <button
+              className="btnIcon"
+              type="button"
+              onClick={() => setThemeState(theme === "light" ? "dark" : "light")}
+              aria-label="Переключить тему"
+              title="Светлая / тёмная"
+            >
+              {theme === "light" ? "☀️" : "🌙"}
+            </button>
+
+            <button
+              className="btnIcon"
+              type="button"
+              onClick={() => setIsMenuOpen((v) => !v)}
+              aria-label="Меню"
+              title="Меню"
+            >
+              ☰
+            </button>
           </div>
         </div>
-      </header>
 
-      <main>
-        <section className="hero">
-          <div className="wrap heroGrid">
-            <div>
-              <h1>Ремонт техники и IT-помощь во Владивостоке</h1>
-              <p className="muted">
-                Компьютеры • ноутбуки • Mac • планшеты • принтеры • IP-камеры.
-              </p>
-              <div className="cta">
-                <a className="btn" href="#call">Вызвать мастера</a>
+        {/* Dropdown меню на мобилке */}
+        {isMenuOpen && (
+          <div className="mobileMenu" onMouseDown={() => setIsMenuOpen(false)}>
+            <div className="wrap mobileMenuInner" onMouseDown={(e) => e.stopPropagation()}>
+              <button className="mobileLink mobileBtn" type="button" onClick={() => { setIsMenuOpen(false); goHomeTop(); }}>
+                Главная
+              </button>
+
+              <a className="mobileLink" href="/#/call" onClick={() => setIsMenuOpen(false)}>Вызвать мастера</a>
+              <Link className="mobileLink" to="/prices">Цены</Link>
+              <a className="mobileLink" href="/#/consult" onClick={() => setIsMenuOpen(false)}>Консультация</a>
+
+              <div className="mobileCtaRow">
+                <a className="btn btnPrimary" href="/#/call" onClick={() => setIsMenuOpen(false)}>Вызвать мастера</a>
                 <a className="btn btnGhost" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
               </div>
             </div>
+          </div>
+        )}
+      </header>
 
-            <div className="card">
-              <div className="cardTitle">Быстро и понятно</div>
-              <div className="muted">Согласуем цену → делаем → гарантия.</div>
-              <div className="pillRow">
-                <span className="pill">Выезд</span>
-                <span className="pill">Офис</span>
-                <span className="pill">Гарантия</span>
-              </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <main>
+              <Home
+                phone={PHONE}
+                tg={TG}
+                wa={WA}
+                onOpenContacts={openContacts}
+                onLeadSubmit={onLeadSubmit}
+              />
+
+              <footer className="footer">
+                <div className="wrap footerRow">
+                  <div className="muted">© {new Date().getFullYear()} Сергей — сервис</div>
+                  <div className="muted"><Link to="/prices">Цены</Link></div>
+                </div>
+              </footer>
+            </main>
+          }
+        />
+
+        <Route
+          path="/prices"
+          element={
+            <>
+              <Prices />
+              <footer className="footer">
+                <div className="wrap footerRow">
+                  <div className="muted">© {new Date().getFullYear()} Сергей — сервис</div>
+                  <div className="muted">
+                    <button className="linkBtn" type="button" onClick={goHomeTop}>На главную</button>
+                  </div>
+                </div>
+              </footer>
+            </>
+          }
+        />
+      </Routes>
+
+      {/* Модалка контактов */}
+      {isContactsOpen && (
+        <div className="modalOverlay" role="dialog" aria-modal="true" onMouseDown={closeContacts}>
+          <div className="modalCard" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="modalHead">
+              <div className="modalTitle">Контакты</div>
+              <button className="btnIcon" type="button" onClick={closeContacts} aria-label="Закрыть">✕</button>
             </div>
-          </div>
-        </section>
 
-        <section className="section" id="prices">
-          <div className="wrap">
-            <h2>Цены</h2>
-            <div className="card">
-              <div className="row"><span>Диагностика</span><b>от … ₽</b></div>
-              <div className="row"><span>Настройка / обслуживание</span><b>от … ₽</b></div>
-              <div className="row"><span>Ремонт / замена деталей</span><b>от … ₽</b></div>
-              <p className="muted small">Прайс позже расширим.</p>
+            <div className="contactLinks">
+              <a className="contactLink" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>{PHONE}</a>
+              <a className="contactLink" href={TG} target="_blank" rel="noreferrer">Telegram</a>
+              <a className="contactLink" href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
             </div>
-          </div>
-        </section>
 
-        <section className="section" id="consult">
-          <div className="wrap">
-            <h2>Консультация</h2>
-            <div className="card">
-              <p className="muted">Напиши в Telegram/WhatsApp — скажем варианты.</p>
-              <div className="cta">
-                <a className="btn btnGhost" href={TG} target="_blank" rel="noreferrer">Telegram</a>
-                <a className="btn btnGhost" href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
-              </div>
+            <div className="orDivider">
+              <span className="orLine" />
+              <span className="orText">или</span>
+              <span className="orLine" />
             </div>
-          </div>
-        </section>
 
-        <section className="section" id="callback">
-          <div className="wrap">
-            <h2>Обратный звонок</h2>
-            <div className="card">
-              <p className="muted">Пока заглушка. Потом подключим форму.</p>
-              <div className="cta">
-                <a className="btn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
-              </div>
-            </div>
-          </div>
-        </section>
+            <div className="formTitle">Оставьте контакты — мы перезвоним</div>
 
-        <section className="section" id="call">
-          <div className="wrap">
-            <h2>Вызвать мастера</h2>
-            <div className="card">
-              <p className="muted">Заявка по телефону или в мессенджере.</p>
-              <div className="cta">
-                <a className="btn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>Позвонить</a>
-                <a className="btn btnGhost" href={TG} target="_blank" rel="noreferrer">Telegram</a>
-                <a className="btn btnGhost" href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
-              </div>
-            </div>
+            <form className="leadForm" onSubmit={onSubmitModal}>
+              <input
+                className="input"
+                placeholder="Имя"
+                value={form.name}
+                onChange={(e) => setForm((s) => ({ ...s, name: e.target.value }))}
+                autoComplete="name"
+              />
+              <input
+                className="input"
+                placeholder="Телефон"
+                value={form.phone}
+                onChange={(e) => setForm((s) => ({ ...s, phone: e.target.value }))}
+                autoComplete="tel"
+                inputMode="tel"
+                required
+              />
+              <button className="btn btnPrimary" type="submit">Отправить</button>
+              {sent && <div className="sentOk">Заявка отправлена (пока это заглушка).</div>}
+            </form>
           </div>
-        </section>
-
-        <footer className="footer">
-          <div className="wrap footerRow">
-            <div className="muted">© {new Date().getFullYear()} Сергей — сервис</div>
-            <div className="muted">Владивосток • UTC+10</div>
-          </div>
-        </footer>
-      </main>
+        </div>
+      )}
+      {/* Мобильная нижняя панель CTA */}
+<div className="mobileBar">
+  <a className="btn btnPrimary mobileBarBtn" href={`tel:${PHONE.replace(/[^\d+]/g, "")}`}>
+    Позвонить
+  </a>
+  <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>
+    Контакты
+  </button>
+</div>
     </>
   );
 }
