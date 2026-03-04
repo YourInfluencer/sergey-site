@@ -16,12 +16,10 @@ function getTheme() {
   const saved = localStorage.getItem("theme");
   return saved === "dark" ? "dark" : "light";
 }
-
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 }
-
 function digitsOnly(s) {
   return String(s || "").replace(/[^\d]/g, "");
 }
@@ -43,13 +41,13 @@ export default function App() {
 
   useEffect(() => setTheme(theme), [theme]);
 
-  // закрываем мобильное меню на переходах по страницам
+  // закрываем моб. меню при переходах + скролл наверх
   useEffect(() => {
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
-  // Esc закрывает меню и модалку
+  // Esc закрывает всё
   useEffect(() => {
     function onKeyDown(e) {
       if (e.key === "Escape") {
@@ -109,7 +107,6 @@ export default function App() {
 
     try {
       setSending(true);
-
       const data = await sendLead({
         name: form.name,
         phone: form.phone,
@@ -119,7 +116,6 @@ export default function App() {
 
       setSentText(`Заявка отправлена ✅ №${data.id}`);
       showToast("ok", `Заявка отправлена ✅ №${data.id}`);
-
       setTimeout(() => setIsContactsOpen(false), 1200);
     } catch (err) {
       console.error(err);
@@ -129,7 +125,6 @@ export default function App() {
     }
   }
 
-  // общий метод для страниц с формой
   async function onLeadSubmit(payload) {
     if (digitsOnly(payload.phone).length < 10) {
       showToast("err", "Введите телефон (минимум 10 цифр)");
@@ -155,13 +150,13 @@ export default function App() {
             <div className="brandText">Лого</div>
           </Link>
 
-          {/* Десктоп-меню: страницы */}
+          {/* Десктоп-меню */}
           <nav className="navDesktop" aria-label="Навигация">
             <Link className="navLink" to="/">Главная</Link>
             <Link className="navLink" to="/services">Услуги</Link>
             <Link className="navLink" to="/prices">Цены</Link>
             <Link className="navLink" to="/consult">Консультация</Link>
-            <Link className="navLink" to="/request">Заявка</Link>
+            <Link className="navLink" to="/request">Вызвать мастера</Link>
 
             <button className="btn btnPrimary" type="button" onClick={openContacts}>
               Контакты
@@ -194,7 +189,13 @@ export default function App() {
               {theme === "light" ? "☀️" : "🌙"}
             </button>
 
-            <button className="btnIcon" type="button" onClick={() => setIsMenuOpen((v) => !v)} aria-label="Меню" title="Меню">
+            <button
+              className="btnIcon"
+              type="button"
+              onClick={() => setIsMenuOpen((v) => !v)}
+              aria-label="Меню"
+              title="Меню"
+            >
               ☰
             </button>
           </div>
@@ -208,7 +209,7 @@ export default function App() {
               <Link className="mobileLink" to="/services">Услуги</Link>
               <Link className="mobileLink" to="/prices">Цены</Link>
               <Link className="mobileLink" to="/consult">Консультация</Link>
-              <Link className="mobileLink" to="/request">Оставить заявку</Link>
+              <Link className="mobileLink" to="/request">Вызвать мастера</Link>
 
               <div className="mobileCtaRow">
                 <a className="btn btnGhost" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
