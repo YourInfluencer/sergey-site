@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 import Home from "./pages/Home.jsx";
@@ -7,6 +7,9 @@ import Prices from "./pages/Prices.jsx";
 import Services from "./pages/Services.jsx";
 import Consult from "./pages/Consult.jsx";
 import RequestPage from "./pages/RequestPage.jsx";
+
+import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
 
 const PHONE = "+7 (914) 774-24-68";
 const TG = "https://t.me/SergejVladimirovichVDK";
@@ -26,14 +29,12 @@ function digitsOnly(s) {
 
 export default function App() {
   const [theme, setThemeState] = useState(getTheme());
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "" });
   const [sentText, setSentText] = useState("");
   const [sending, setSending] = useState(false);
 
-  // toast
   const [toast, setToast] = useState(null); // {type:"ok"|"err", text}
   const [toastKey, setToastKey] = useState(0);
 
@@ -41,19 +42,15 @@ export default function App() {
 
   useEffect(() => setTheme(theme), [theme]);
 
-  // закрываем моб. меню при переходах + скролл наверх
+  // скролл наверх при смене страницы
   useEffect(() => {
-    setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
-  // Esc закрывает всё
+  // Esc закрывает модалку
   useEffect(() => {
     function onKeyDown(e) {
-      if (e.key === "Escape") {
-        setIsMenuOpen(false);
-        setIsContactsOpen(false);
-      }
+      if (e.key === "Escape") setIsContactsOpen(false);
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -78,7 +75,6 @@ export default function App() {
     setIsContactsOpen(false);
   }
 
-  // ====== ОТПРАВКА НА БЭК ======
   async function sendLead(payload) {
     const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
@@ -144,83 +140,11 @@ export default function App() {
         </div>
       )}
 
-      <header className="topbar">
-        <div className="wrap topbarInner">
-          <Link className="brand" to="/" aria-label="На главную">
-            <div className="brandText">Лого</div>
-          </Link>
-
-          {/* Десктоп-меню */}
-          <nav className="navDesktop" aria-label="Навигация">
-            <Link className="navLink" to="/">Главная</Link>
-            <Link className="navLink" to="/services">Услуги</Link>
-            <Link className="navLink" to="/prices">Цены</Link>
-            <Link className="navLink" to="/consult">Консультация</Link>
-            <Link className="navLink" to="/request">Вызвать мастера</Link>
-
-            <button className="btn btnPrimary" type="button" onClick={openContacts}>
-              Контакты
-            </button>
-
-            <button
-              className="btnIcon"
-              type="button"
-              onClick={() => setThemeState(theme === "light" ? "dark" : "light")}
-              aria-label="Переключить тему"
-              title="Светлая / тёмная"
-            >
-              {theme === "light" ? "☀️" : "🌙"}
-            </button>
-          </nav>
-
-          {/* Мобильная шапка */}
-          <div className="navMobile">
-            <button className="btn btnPrimary" type="button" onClick={openContacts}>
-              Контакты
-            </button>
-
-            <button
-              className="btnIcon"
-              type="button"
-              onClick={() => setThemeState(theme === "light" ? "dark" : "light")}
-              aria-label="Переключить тему"
-              title="Светлая / тёмная"
-            >
-              {theme === "light" ? "☀️" : "🌙"}
-            </button>
-
-            <button
-              className="btnIcon"
-              type="button"
-              onClick={() => setIsMenuOpen((v) => !v)}
-              aria-label="Меню"
-              title="Меню"
-            >
-              ☰
-            </button>
-          </div>
-        </div>
-
-        {/* Dropdown меню на мобилке */}
-        {isMenuOpen && (
-          <div className="mobileMenu" onMouseDown={() => setIsMenuOpen(false)}>
-            <div className="wrap mobileMenuInner" onMouseDown={(e) => e.stopPropagation()}>
-              <Link className="mobileLink" to="/">Главная</Link>
-              <Link className="mobileLink" to="/services">Услуги</Link>
-              <Link className="mobileLink" to="/prices">Цены</Link>
-              <Link className="mobileLink" to="/consult">Консультация</Link>
-              <Link className="mobileLink" to="/request">Вызвать мастера</Link>
-
-              <div className="mobileCtaRow">
-                <a className="btn btnGhost" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
-                <button className="btn btnPrimary" type="button" onClick={() => { setIsMenuOpen(false); openContacts(); }}>
-                  Контакты
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
+      <Header
+        theme={theme}
+        onToggleTheme={() => setThemeState(theme === "light" ? "dark" : "light")}
+        onOpenContacts={openContacts}
+      />
 
       <Routes>
         <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} /></main>} />
@@ -229,6 +153,9 @@ export default function App() {
         <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
         <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
       </Routes>
+
+      {/* footer (бордер снизу) */}
+      <Footer phone={PHONE} tg={TG} wa={WA} />
 
       {/* Модалка контактов */}
       {isContactsOpen && (
@@ -270,7 +197,6 @@ export default function App() {
                 inputMode="tel"
                 required
               />
-
               <button className="btn btnPrimary" type="submit" disabled={sending}>
                 {sending ? "Отправляем..." : "Отправить"}
               </button>
@@ -280,12 +206,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      {/* Нижняя панель на мобилке */}
-      <div className="mobileBar">
-        <a className="btn btnPrimary mobileBarBtn" href={`tel:${digitsOnly(PHONE)}`}>Позвонить</a>
-        <button className="btn btnGhost mobileBarBtn" type="button" onClick={openContacts}>Контакты</button>
-      </div>
     </>
   );
 }

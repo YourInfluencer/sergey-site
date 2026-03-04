@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function digitsOnly(s) {
@@ -7,52 +7,52 @@ function digitsOnly(s) {
 
 export default function RequestPage({ onLeadSubmit }) {
   const location = useLocation();
-
-  const [sending, setSending] = useState(false);
-  const [resultText, setResultText] = useState("");
+  const state = location.state || {};
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [comment, setComment] = useState("");
 
-  // Подхват текста из /services → navigate("/request", { state: { prefill } })
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState("");
+
+  const title = state.title || "Заявка";
+  const hint = state.hint || "Совет: укажите модель и симптомы — так мы быстрее скажем варианты.";
+  const icon = state.icon || "🛠️";
+  const items = Array.isArray(state.items) ? state.items : null;
+
   useEffect(() => {
-    const prefill = location.state?.prefill;
-    if (typeof prefill === "string") {
-      setComment((prev) => (prev ? prev : prefill));
-      // очищаем state, чтобы при обновлении страницы не “залипало”
-      window.history.replaceState({}, "");
-    }
-  }, [location.state]);
+    // при заходе со страницы услуг — подставляем текст
+    if (typeof state.prefill === "string") setComment(state.prefill);
+  }, [state.prefill]);
+
+  const canSend = useMemo(() => digitsOnly(phone).length >= 10, [phone]);
 
   async function submit(e) {
     e.preventDefault();
-    setResultText("");
+    setResult("");
 
-    const payload = {
-      name,
-      phone,
-      comment,
-      source: "request_page",
-    };
-
-    if (digitsOnly(payload.phone).length < 10) {
-      setResultText("Введите телефон (минимум 10 цифр).");
+    if (!canSend) {
+      setResult("Введите телефон (минимум 10 цифр).");
       return;
     }
 
     try {
       setSending(true);
-      const data = await onLeadSubmit(payload);
-      if (data?.ok) {
-        setResultText(`Спасибо! Заявка отправлена ✅ №${data.id}`);
-        setName("");
-        setPhone("");
-        setComment("");
-      }
+      const data = await onLeadSubmit({
+        name,
+        phone,
+        comment,
+        source: "request_page",
+      });
+
+      setResult(`Заявка отправлена ✅ №${data.id}`);
+      setName("");
+      setPhone("");
+      setComment("");
     } catch (err) {
       console.error(err);
-      setResultText("Не удалось отправить. Попробуйте ещё раз.");
+      setResult("Не удалось отправить. Проверь сервер.");
     } finally {
       setSending(false);
     }
@@ -61,11 +61,39 @@ export default function RequestPage({ onLeadSubmit }) {
   return (
     <section className="section">
       <div className="wrap">
-        <h1 className="pageTitle">Заявка</h1>
+        <h1 className="pageTitle">{title}</h1>
 
-        <div className="card">
+        {/* Карточка выбранной темы (как у тебя на скрине) */}
+        <div className="card" style={{ marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <div style={{ fontSize: 18 }}>{icon}</div>
+            <div className="cardTitle" style={{ marginBottom: 0 }}>
+              {title}
+            </div>
+          </div>
+
+          {items && (
+            <ul className="miniList">
+              {items.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          )}
+
+          <div className="cta" style={{ marginTop: 12 }}>
+            <a className="btn btnPrimary" href="#form">
+              Оставить заявку по теме
+            </a>
+            <a className="btn btnGhost" href="#form">
+              Нужна консультация
+            </a>
+          </div>
+        </div>
+
+        {/* Форма */}
+        <div className="card" id="form">
           <div className="cardTitle">Оставьте контакты — мы перезвоним</div>
-          <p className="muted">
+          <p className="muted" style={{ marginTop: 0 }}>
             Напишите модель и симптомы — так мы быстрее поймём ситуацию и скажем варианты.
           </p>
 
@@ -77,7 +105,6 @@ export default function RequestPage({ onLeadSubmit }) {
               onChange={(e) => setName(e.target.value)}
               autoComplete="name"
             />
-
             <input
               className="input"
               placeholder="Телефон"
@@ -87,11 +114,10 @@ export default function RequestPage({ onLeadSubmit }) {
               inputMode="tel"
               required
             />
-
             <textarea
               className="input"
-              placeholder="Модель и симптомы (можно коротко)"
-              rows={5}
+              placeholder="Модель и симптомы"
+              rows={4}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
@@ -100,13 +126,10 @@ export default function RequestPage({ onLeadSubmit }) {
               {sending ? "Отправляем..." : "Отправить"}
             </button>
 
-            {resultText && <div className="sentOk">{resultText}</div>}
-          </form>
+            <div className="muted small">{hint}</div>
 
-          <div className="muted small" style={{ marginTop: 10 }}>
-            Совет: если ТВ — напишите, есть ли звук и как ведёт себя индикатор.  
-            Если ноут/ПК — включается ли и появляется ли изображение.
-          </div>
+            {result && <div className="sentOk">{result}</div>}
+          </form>
         </div>
       </div>
     </section>
