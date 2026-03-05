@@ -60,11 +60,22 @@ export default function Prices() {
           </p>
 
           <div className="priceGrid">
-            <div className="priceCard">
-              <div className="priceName">Диагностика</div>
-              <div className="priceFrom">от 500 ₽</div>
+            {/* 1) Ставим консультацию первой */}
+            <div className="priceCard priceCardHighlight">
+              <div className="priceName">Консультация по телефону и в мессенджере</div>
+              <div className="priceFrom">Бесплатно!</div>
               <div className="muted small">
-                Проверка причины неисправности, оценка вариантов и стоимости ремонта.
+                Консультация по телефону и в мессенджере — бесплатно. Напишите модель и симптомы — подскажем варианты и ориентир по стоимости.
+              </div>
+            </div>
+
+            {/* 2) Выезд + диагностика с уточнением */}
+            <div className="priceCard">
+              <div className="priceName">Выезд + диагностика</div>
+              <div className="priceFrom">от 1 500 ₽</div>
+              <div className="muted small">
+                Приезд мастера и первичная проверка <b>без вскрытия устройства</b>:
+                уточняем симптомы и называем варианты решения/стоимости.
               </div>
             </div>
 
@@ -72,7 +83,7 @@ export default function Prices() {
               <div className="priceName">Настройка / обслуживание</div>
               <div className="priceFrom">от 1 500 ₽</div>
               <div className="muted small">
-                Настройка Windows/программ, ускорение, чистка системы, драйверы, Wi-Fi/роутер.
+                Настройка Windows/программ, ускорение, драйверы, Wi-Fi/роутер, базовые проблемы.
               </div>
             </div>
 
@@ -80,7 +91,7 @@ export default function Prices() {
               <div className="priceName">Ремонт / замена деталей</div>
               <div className="priceFrom">от 3 000 ₽</div>
               <div className="muted small">
-                Замена комплектующих, ремонт питания, разъёмов, пайка, восстановление после залития (по ситуации).
+                Замена комплектующих, ремонт разъёмов/питания, восстановление после залития (по ситуации).
               </div>
             </div>
           </div>
@@ -96,7 +107,18 @@ export default function Prices() {
               </ul>
               <p className="muted small" style={{ marginTop: 10 }}>
                 Мы не делаем “втихаря”. Если по ходу диагностики появляются варианты —
-                объясняем, показываем и согласуем.
+                объясняем и согласуем до продолжения.
+              </p>
+            </div>
+          </div>
+
+          <div className="section" style={{ paddingTop: 0 }}>
+            <div className="card">
+              <div className="cardTitle">Важно про цены</div>
+              <p className="muted" style={{ margin: 0 }}>
+                Не гонитесь за слишком низкой ценой у «мастеров» и на сайтах. Нередко за этим стоят
+                скрытые доплаты и недомолвки, а итоговый счёт получается выше ожидаемого.
+                Мы предлагаем честную среднюю цену по рынку и качество, которое зарекомендовало себя годами.
               </p>
             </div>
           </div>
@@ -109,7 +131,7 @@ export default function Prices() {
               <div className="row"><span>Подключение принтера/МФУ, настройка печати/сканирования</span><b>от 1 500 ₽</b></div>
               <div className="row"><span>Настройка Wi-Fi/роутера, устранение “пропадает интернет”</span><b>от 1 500 ₽</b></div>
               <div className="row"><span>Телевизор: настройка Smart TV / приложений / приставки</span><b>от 1 500 ₽</b></div>
-              <div className="row"><span>Телевизор: диагностика “нет изображения / не включается”</span><b>от 1 000 ₽</b></div>
+              <div className="row"><span>Телевизор: диагностика “нет изображения / не включается”</span><b>от 1 500 ₽</b></div>
               <p className="muted small" style={{ marginTop: 10 }}>
                 Это ориентиры. Иногда проблема решается быстро, а иногда нужна диагностика и варианты.
               </p>
@@ -126,7 +148,12 @@ export default function Prices() {
               <form className="leadForm" onSubmit={submit}>
                 <input className="input" name="name" placeholder="Имя" autoComplete="name" />
                 <input className="input" name="phone" placeholder="Телефон" autoComplete="tel" inputMode="tel" required />
-                <textarea className="input" name="comment" placeholder="Модель и симптомы (например: LG 50, не включается; ноут шумит и греется)" rows={3} />
+                <textarea
+                  className="input"
+                  name="comment"
+                  placeholder="Модель и симптомы (например: LG 50, не включается; ноут шумит и греется)"
+                  rows={3}
+                />
 
                 <button className="btn btnPrimary" type="submit" disabled={sending}>
                   {sending ? "Отправляем..." : "Отправить"}

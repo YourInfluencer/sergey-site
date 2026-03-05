@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Home({ phone, tg, wa }) {
+export default function Home({ phone, tg, wa, onOpenContacts }) {
   const nav = useNavigate();
   const phoneDigits = useMemo(() => String(phone || "").replace(/[^\d+]/g, ""), [phone]);
 
@@ -67,26 +67,17 @@ export default function Home({ phone, tg, wa }) {
             </p>
 
             <div className="cta">
-              <button
-                className="btn btnPrimary"
-                type="button"
-                onClick={() =>
-                  goRequest("", {
-                    title: "Заявка",
-                    hint: "Укажите модель и симптомы — мы перезвоним и подскажем варианты.",
-                  })
-                }
-              >
+              <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
                 Вызвать мастера
               </button>
 
-              <a className="btn btnGhost" href={`tel:${phoneDigits}`}>
-                Позвонить
-              </a>
+              <Link className="btn btnGhost" to="/services">
+                Услуги
+              </Link>
 
-              <a className="btn btnGhost" href={tg} target="_blank" rel="noreferrer">
-                Telegram
-              </a>
+              <Link className="btn btnGhost" to="/prices">
+                Цены
+              </Link>
             </div>
 
             <div className="miniInfo">
@@ -98,7 +89,6 @@ export default function Home({ phone, tg, wa }) {
 
           {/* Место под hero-картинку */}
           <div className="heroMedia">
-            {/* если картинки пока нет — оставь так */}
             <div className="heroMediaCard">
               <div className="heroMediaTitle">Оставьте заявку — мы перезвоним</div>
               <div className="muted small">
@@ -113,7 +103,6 @@ export default function Home({ phone, tg, wa }) {
                 </Link>
               </div>
             </div>
-            {/* Позже можешь заменить на <img className="heroImg" src="/img/hero.webp" alt="" /> */}
           </div>
         </div>
       </section>
@@ -123,6 +112,16 @@ export default function Home({ phone, tg, wa }) {
         <div className="wrap">
           <h2>Выберите устройство</h2>
           <p className="muted">Нажмите на плитку — откроется заявка с подсказками.</p>
+
+          <div className="flow">
+            <div className="flowStep"><span className="flowNum">1</span>Выберите устройство</div>
+            <div className="flowArrow">→</div>
+            <div className="flowStep"><span className="flowNum">2</span>Выберите проблему</div>
+            <div className="flowArrow">→</div>
+            <div className="flowStep"><span className="flowNum">3</span>Отправьте заявку</div>
+            <div className="flowArrow">→</div>
+            <div className="flowStep"><span className="flowNum">4</span>Мы перезвоним</div>
+          </div>
 
           <div className="deviceGrid">
             {tiles.map((t) => (
@@ -137,7 +136,6 @@ export default function Home({ phone, tg, wa }) {
                   <div className="deviceTitle">{t.title}</div>
                 </div>
 
-                {/* если картинки нет — просто не будет показываться, но место останется */}
                 <div className="deviceImgWrap">
                   <img
                     className="deviceImg"
@@ -145,7 +143,6 @@ export default function Home({ phone, tg, wa }) {
                     alt=""
                     loading="lazy"
                     onError={(e) => {
-                      // если файла нет — скрываем img, чтобы не было “битой картинки”
                       e.currentTarget.style.display = "none";
                     }}
                   />

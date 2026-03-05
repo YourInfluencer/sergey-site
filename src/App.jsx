@@ -149,7 +149,7 @@ export default function App() {
       {/* Контент (растягивается, чтобы футер ушёл вниз) */}
       <div className="appMain">
         <Routes>
-          <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} /></main>} />
+          <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
           <Route path="/services" element={<main><Services /></main>} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
