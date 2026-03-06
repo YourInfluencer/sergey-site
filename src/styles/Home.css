@@ -196,28 +196,12 @@
 .deviceArrow{ margin-left:auto; opacity:.55; font-weight:900; }
 
 .deviceImgWrap{
+  height: 140px;
+  padding: 0;
   position: relative;
-  width:100%;
-  height:110px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  overflow:hidden;
-
-  background:
-    radial-gradient(120px 80px at 20% 20%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
-    radial-gradient(140px 90px at 80% 30%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
-    linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--bg) 92%, transparent));
-}
-
-.deviceImgWrap::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  opacity:.55;
-  background-image: radial-gradient(color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px);
-  background-size: 12px 12px;
-  mask-image: linear-gradient(180deg, #000 40%, transparent);
-  pointer-events:none;
+  overflow: hidden;
+  border-radius: 14px;
+  background: transparent;
 }
 
 .deviceImg{
@@ -225,8 +209,16 @@
   z-index: 1;
   width:100%;
   height:100%;
-  object-fit:cover;
+  object-fit: cover;
+  object-position: center;
   display:block;
+}
+
+@media (min-width: 900px){
+  .deviceImgWrap{ height: 150px; }
+}
+@media (max-width: 520px){
+  .deviceImgWrap{ height: 170px; } /* на мобиле можно больше */
 }
 
 .deviceSub{
@@ -400,4 +392,116 @@
     height:34px;
     border-radius: 12px;
   }
+}
+
+/* SVG иконки в кружке — ровно и одинаково */
+.deviceIcon{
+  overflow: hidden;
+}
+
+.deviceIconSvg{
+  width: 20px;
+  height: 20px;
+  display:block;
+  opacity: .95;
+  /* важное: чтобы svg подхватывал currentColor, если мы так сделаем */
+  /* но для этого svg должен быть с fill="currentColor" */
+}
+
+.deviceIcon{
+  color: var(--text); /* в dark станет светлым автоматически */
+}
+
+.deviceIconSvg{
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ===== Photo banner ===== */
+.photoBanner{
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--r) + 6px);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.photoBannerImg{
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.photoBannerOverlay{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.55));
+}
+
+:root[data-theme="dark"] .photoBannerOverlay{
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.62));
+}
+
+.photoBannerTitle{
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.photoBannerText{
+  color: rgba(255,255,255,.85);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ===== Trust image ===== */
+.trustImg{
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+
+/* ===== Photo grid ===== */
+.photoGrid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.photoTile{
+  display: block;
+  border-radius: calc(var(--r) + 2px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+.photoImg{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px){
+  .photoGrid{ grid-template-columns: repeat(2, 1fr); }
+  .photoImg{ height: 170px; }
+}
+
+@media (max-width: 520px){
+  .photoGrid{ grid-template-columns: 1fr; }
+  .photoBannerImg{ height: 220px; }
+  .photoImg{ height: 200px; }
 }

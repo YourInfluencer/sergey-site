@@ -1,0 +1,60 @@
+/* =========================
+   REQUEST PAGE FORM
+   ========================= */
+
+.requestForm{
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+/* 1-я строка */
+.requestName{ grid-column: 1; }
+.requestPhone{ grid-column: 2; }
+.requestBtn{
+  grid-column: 3;
+  height: 44px;          /* чтобы по высоте совпало с input */
+  align-self: start;
+  padding-left: 18px;
+  padding-right: 18px;
+  white-space: nowrap;
+}
+
+/* 2-я строка — на всю ширину */
+.requestComment{
+  grid-column: 1 / -1;
+  min-height: 140px;     /* побольше поле */
+}
+
+/* 3-я строка — подсказка на всю ширину ниже */
+.requestHint{
+  grid-column: 1 / -1;
+  margin-top: -2px;
+}
+
+/* результат — тоже на всю ширину */
+.requestResult{
+  grid-column: 1 / -1;
+}
+
+/* Мобилка */
+@media (max-width: 700px){
+  .requestForm{
+    grid-template-columns: 1fr;
+  }
+  .requestName,
+  .requestPhone,
+  .requestBtn,
+  .requestComment,
+  .requestHint,
+  .requestResult{
+    grid-column: 1 / -1;
+  }
+  .requestBtn{
+    width: 100%;
+  }
+  .requestComment{
+    min-height: 160px;
+  }
+}

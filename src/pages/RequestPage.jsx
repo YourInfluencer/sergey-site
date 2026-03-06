@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import "../styles/request.css";
 
 function digitsOnly(s) {
   return String(s || "").replace(/[^\d]/g, "");
@@ -46,13 +47,13 @@ export default function RequestPage({ onLeadSubmit }) {
         source: "request_page",
       });
 
-      setResult(`Заявка отправлена ✅ №${data.id}`);
+      setResult(`Заявка отправлена ✅`);
       setName("");
       setPhone("");
       setComment("");
     } catch (err) {
       console.error(err);
-      setResult("Не удалось отправить. Проверь сервер.");
+      setResult("Не удалось отправить. Проверьте интернет соединение.");
     } finally {
       setSending(false);
     }
@@ -97,16 +98,17 @@ export default function RequestPage({ onLeadSubmit }) {
             Напишите модель и симптомы — так мы быстрее поймём ситуацию и скажем варианты.
           </p>
 
-          <form className="leadForm" onSubmit={submit}>
+          <form className="leadForm requestForm" onSubmit={submit}>
             <input
-              className="input"
+              className="input requestName"
               placeholder="Имя"
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoComplete="name"
             />
+
             <input
-              className="input"
+              className="input requestPhone"
               placeholder="Телефон"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -114,21 +116,22 @@ export default function RequestPage({ onLeadSubmit }) {
               inputMode="tel"
               required
             />
+
+            <button className="btn btnPrimary requestBtn" type="submit" disabled={sending}>
+              {sending ? "Отправляем..." : "Отправить"}
+            </button>
+
             <textarea
-              className="input"
+              className="input requestComment"
               placeholder="Модель и симптомы"
-              rows={4}
+              rows={5}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
 
-            <button className="btn btnPrimary" type="submit" disabled={sending}>
-              {sending ? "Отправляем..." : "Отправить"}
-            </button>
+            <div className="muted small requestHint">{hint}</div>
 
-            <div className="muted small">{hint}</div>
-
-            {result && <div className="sentOk">{result}</div>}
+            {result && <div className="sentOk requestResult">{result}</div>}
           </form>
         </div>
       </div>

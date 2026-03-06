@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Home.css";
+import { TvIcon, LaptopIcon, PrinterIcon, WifiIcon, CctvIcon, ToolsIcon } from "../components/Icons.jsx";
 
 export default function Home({ phone, tg, wa, onOpenContacts }) {
   const nav = useNavigate();
@@ -13,42 +14,42 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
   const tiles = [
     {
       title: "Телевизоры",
-      icon: "📺",
+      icon: <TvIcon className="deviceIconSvg" />,
       img: "/img/tv.webp",
       prefill: "Телевизоры: ",
-      hint: "Укажите модель ТВ, есть ли звук, как ведёт себя индикатор, были ли щелчки. Если можете — фото/видео.",
+      hint: "Укажите модель ТВ, есть ли звук, как ведёт себя индикатор, были ли щелчки.",
     },
     {
       title: "Компьютеры и ноутбуки",
-      icon: "💻",
+      icon: <LaptopIcon className="deviceIconSvg" />,
       img: "/img/laptop.webp",
       prefill: "Компьютеры/ноутбуки: ",
       hint: "Укажите модель, симптомы и что было «до» (обновление/падение/залитие). Если знаете — SSD/HDD и ОЗУ.",
     },
     {
       title: "Принтеры и МФУ",
-      icon: "🖨️",
+      icon: <PrinterIcon className="deviceIconSvg" />,
       img: "/img/printer.webp",
       prefill: "Принтер/МФУ: ",
-      hint: "Укажите модель, тип подключения (USB/Wi-Fi) и что пишет в ошибке. Если есть — фото результата печати.",
+      hint: "Укажите модель, тип подключения (USB/Wi-Fi) и что пишет в ошибке.",
     },
     {
       title: "Wi-Fi / интернет",
-      icon: "📶",
+      icon: <WifiIcon className="deviceIconSvg" />,
       img: "/img/wifi.webp",
       prefill: "Wi-Fi/интернет: ",
       hint: "Укажите модель роутера, где плохо ловит, сколько устройств и что происходит (обрывы/нет интернета).",
     },
     {
       title: "IP-камеры",
-      icon: "📷",
+      icon: <CctvIcon className="deviceIconSvg" />,
       img: "/img/cctv.webp",
       prefill: "IP-камеры: ",
       hint: "Сколько камер, где нужно смотреть (телефон/ПК), нужна ли запись и какая модель/приложение.",
     },
     {
       title: "Другое",
-      icon: "🛠️",
+      icon: <ToolsIcon className="deviceIconSvg" />,
       img: "/img/tools.webp",
       prefill: "Другое устройство: ",
       hint: "Напишите модель и симптомы. Подскажем варианты и стоит ли ремонтировать.",
@@ -104,14 +105,31 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
               </div>
 
               <div className="cta" style={{ marginTop: 12 }}>
-                <button className="btn btnPrimary" type="button" onClick={() => goRequest("", {
-                  title: "Заявка",
-                  hint: "Укажите модель и симптомы. Чем точнее — тем быстрее ответим.",
-                })}>
+                <button
+                  className="btn btnPrimary"
+                  type="button"
+                  onClick={() => goRequest("", {
+                    title: "Заявка",
+                    hint: "Укажите модель и симптомы. Чем точнее — тем быстрее ответим.",
+                  })}
+                >
                   Оставить заявку
                 </button>
                 <Link className="btn btnGhost" to="/prices">Посмотреть цены</Link>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BIG BANNER */}
+      <section className="section">
+        <div className="wrap">
+          <div className="photoBanner">
+            <img className="photoBannerImg" src="/img/banner-1.webp" alt="Ремонт техники" loading="lazy" />
+            <div className="photoBannerOverlay">
+              <div className="photoBannerTitle">Работаем аккуратно и прозрачно</div>
+              <div className="photoBannerText">Покажем причину, согласуем цену до начала работ.</div>
             </div>
           </div>
         </div>
@@ -129,10 +147,12 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                 key={t.title}
                 type="button"
                 className="deviceTile"
-                onClick={() => goRequest(t.prefill, { title: t.title, icon: t.icon, hint: t.hint })}
+                onClick={() => goRequest(t.prefill, { title: t.title, hint: t.hint })}
               >
                 <div className="deviceTop">
-                  <div className="deviceIcon">{t.icon}</div>
+                  <div className="deviceIcon" aria-hidden="true">
+                    {t.icon}
+                  </div>
                   <div className="deviceTitle">{t.title}</div>
                   <div className="deviceArrow">→</div>
                 </div>
@@ -152,7 +172,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             ))}
           </div>
 
-          <div className="cta" style={{ marginTop: 12 }}>
+          <div className="cta" style={{ marginTop: 36 }}>
             <Link className="btn btnPrimary" to="/services">Все услуги</Link>
             <Link className="btn btnGhost" to="/prices">Цены</Link>
           </div>
@@ -165,20 +185,37 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <h2>Почему нам доверяют</h2>
           <div className="trustGrid">
             <div className="trustCard">
-              <div className="trustIcon">✅</div>
+              <img className="trustImg" src="/img/trust-1.webp" alt="" loading="lazy" />
               <div className="trustTitle">Цена заранее</div>
               <div className="trustText">Согласуем стоимость до начала работ.</div>
             </div>
+
             <div className="trustCard">
-              <div className="trustIcon">🧾</div>
+              <img className="trustImg" src="/img/trust-2.webp" alt="" loading="lazy" />
               <div className="trustTitle">Понятно</div>
               <div className="trustText">Объясняем простыми словами — без “умных” слов.</div>
             </div>
+
             <div className="trustCard">
-              <div className="trustIcon">🛠️</div>
+              <img className="trustImg" src="/img/trust-3.webp" alt="" loading="lazy" />
               <div className="trustTitle">Гарантия</div>
               <div className="trustText">На выполненные работы предоставляем гарантию.</div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
+          <h2>Как мы работаем</h2>
+          <p className="muted">Несколько реальных фото процесса.</p>
+
+          <div className="photoGrid">
+            {["1","2","3","4","5","6"].map((n) => (
+              <a key={n} className="photoTile" href={`/img/gallery-${n}.webp`} target="_blank" rel="noreferrer">
+                <img className="photoImg" src={`/img/gallery-${n}.webp`} alt="" loading="lazy" />
+              </a>
+            ))}
           </div>
         </div>
       </section>

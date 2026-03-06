@@ -120,3 +120,71 @@ h2{margin:0 0 10px;font-size:24px}
 @media (max-width: 360px){
   .topbar, main{padding-left:14px;padding-right:14px}
 }
+
+/* ===== Lead form: 2 строки (Имя+Телефон) + (Описание+Кнопка) ===== */
+
+.leadForm{
+  display: grid;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.leadForm .input{
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+.leadForm textarea.input{
+  height: auto;          /* чтобы было “побольше” */
+  min-height: 92px;      /* <-- тут регулируй высоту */
+  resize: vertical;
+  line-height: 1.25;
+}
+
+/* Desktop/tablet */
+@media (min-width: 820px){
+  .leadForm{
+    grid-template-columns: 1fr 1fr auto; /* имя | телефон | кнопка */
+    grid-template-areas:
+      "name phone btn"
+      "comment comment comment"
+      "hint hint hint";
+  }
+
+  .leadForm input[name="name"]{ grid-area: name; }
+  .leadForm input[name="phone"]{ grid-area: phone; }
+  .leadForm textarea[name="comment"]{ grid-area: comment; }
+
+  /* подсказка под формой */
+  .leadForm .formHint{ grid-area: hint; }
+
+  .leadForm button[type="submit"]{
+    grid-area: btn;
+    height: 44px;
+    align-self: start;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile */
+@media (max-width: 819px){
+  .leadForm{
+    grid-template-columns: 1fr;
+  }
+  .leadForm button[type="submit"]{
+    height: 44px;
+  }
+}
+
+/* если есть текст результата под формой */
+.leadForm .sentOk{
+  grid-column: 1 / -1;
+}
