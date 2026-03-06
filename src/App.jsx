@@ -146,15 +146,21 @@ export default function App() {
         onOpenContacts={openContacts}
       />
 
-      {/* Контент (растягивается, чтобы футер ушёл вниз) */}
       <div className="appMain">
-        <Routes>
-          <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
-          <Route path="/services" element={<main><Services /></main>} />
-          <Route path="/prices" element={<Prices />} />
-          <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
-          <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
-        </Routes>
+        <div className="pageFrame">
+          <div className="sideDecor sideDecorLeft" aria-hidden="true" />
+          <div className="sideDecor sideDecorRight" aria-hidden="true" />
+
+          <div className="pageContent">
+            <Routes>
+              <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+              <Route path="/services" element={<main><Services /></main>} />
+              <Route path="/prices" element={<Prices />} />
+              <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+              <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
+            </Routes>
+          </div>
+        </div>
       </div>
 
       {/* footer (бордер снизу) */}

@@ -2,12 +2,131 @@
    LAYOUT (only layout!)
    ========================= */
 
+/* sticky footer */
 .appShell{
   min-height: 100dvh;
   display:flex;
   flex-direction:column;
 }
 
-.appMain{
-  flex: 1;
+.appMain{ flex: 1; }
+
+.pageFrame{
+  position: relative;
+  background: var(--bg);
+}
+
+/* content above side images */
+.pageContent{
+  position: relative;
+  z-index: 2;
+}
+
+/* hidden by default */
+.sideDecor{ display:none; }
+
+/* theme tuning */
+:root{
+  --sideWash: .18;     /* light: лёгкая “подстройка” под фон, НЕ молоко */
+  --sideSat: 1.05;
+  --sideCon: 1.04;
+
+  --sideFadeIn: 58%;   /* где начинается растворение к центру */
+  --sideFadeTB: 10%;   /* верх/низ чуть в фон (можешь поставить 0%) */
+}
+
+:root[data-theme="dark"]{
+  --sideWash: .10;
+  --sideSat: 1.03;
+  --sideCon: 1.02;
+
+  --sideFadeIn: 62%;
+  --sideFadeTB: 12%;
+}
+
+@media (min-width: 1100px){
+  .sideDecor{
+    display:block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: max(240px, calc((100vw - 1100px) / 2));
+    pointer-events: none;
+    z-index: 1;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+    transform: translateZ(0);
+    filter: saturate(var(--sideSat)) contrast(var(--sideCon));
+  }
+
+  .sideDecorLeft{
+    left: 0;
+    background-image: url("/img/side-left.webp");
+  }
+  .sideDecorRight{
+    right: 0;
+    background-image: url("/img/side-right.webp");
+  }
+
+  /* лёгкая подстройка фото под фон (НЕ обязателен, но помогает теме) */
+  .sideDecor::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: var(--bg);
+    opacity: var(--sideWash);
+  }
+
+  /*
+    МАСКА:
+    - у края экрана НЕТ градиента (сразу transparent)
+    - растворение начинается ближе к центру и уходит в var(--bg)
+  */
+
+  /* LEFT: к центру -> в bg, у левого края -> без градиента */
+  .sideDecorLeft::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      /* top/bottom (можешь выключить, поставив --sideFadeTB: 0%) */
+      linear-gradient(to bottom,
+        var(--bg) 0%,
+        transparent var(--sideFadeTB),
+        transparent calc(100% - var(--sideFadeTB)),
+        var(--bg) 100%
+      ),
+      /* dissolve to center */
+      linear-gradient(to right,
+        transparent 0%,
+        transparent var(--sideFadeIn),
+        var(--bg) 100%
+      );
+  }
+
+  /* RIGHT: к центру -> в bg, у правого края -> без градиента */
+  .sideDecorRight::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(to bottom,
+        var(--bg) 0%,
+        transparent var(--sideFadeTB),
+        transparent calc(100% - var(--sideFadeTB)),
+        var(--bg) 100%
+      ),
+      linear-gradient(to left,
+        transparent 0%,
+        transparent var(--sideFadeIn),
+        var(--bg) 100%
+      );
+  }
 }
