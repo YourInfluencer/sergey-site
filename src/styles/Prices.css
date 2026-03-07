@@ -97,12 +97,14 @@
   border: 1px solid var(--border);
   overflow: hidden;
   background: color-mix(in srgb, var(--surface) 85%, transparent);
-  margin-left: -16px;
-  margin-right: -16px;
+  /*margin-left: -16px;*/
+  margin-right: -2px;
 }
 
 .photoBannerSm{
   height: 510px;
+  margin-left: -16px;
+  margin-right: -14px;
 }
 
 @media (max-width: 520px){

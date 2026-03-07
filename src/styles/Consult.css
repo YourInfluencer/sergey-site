@@ -1,0 +1,358 @@
+/* src/styles/Consult.css */
+
+/* ===== layout ===== */
+.consultTop{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:12px;
+  align-items:start;
+  margin-top:12px;
+}
+
+.consultBottom{
+  display:grid;
+  grid-template-columns: 1fr .85fr; /* справа чуть уже и аккуратнее */
+  gap:12px;
+  align-items:start;
+  margin-top:12px;
+}
+
+.consultBottomRight{
+  display:grid;
+  gap:12px;               /* чтобы “Если не хотите писать” и фото были ровно один под другим */
+  align-content:start;
+}
+
+/* ===== textarea ===== */
+.consultTextarea{
+  width:100%;
+  box-sizing:border-box;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  padding: 14px;
+  resize: vertical;
+  min-height: 339px;
+  outline: none;
+
+  /* bigger text */
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.consultTextarea:focus{
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+/* ===== actions ===== */
+.consultCta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+
+.consultNote{ margin-top: 10px; }
+
+/* quick list */
+.quickList{
+  display:grid;
+  gap:13px;
+  margin-top:10px;
+}
+
+.quickBtn{
+  width:100%;
+  text-align:left;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  padding:10px 12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+}
+
+.quickBtn:hover{
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.06);
+}
+
+.quickLabel{ font-weight:800; }
+.quickArrow{ opacity:.55; font-weight:900; }
+
+/* checklist */
+.checkList{
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+
+.checkItem{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+}
+
+.checkMark{
+  width:22px;height:22px;flex:0 0 22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  font-weight:900;
+}
+
+/* ===== break slot ===== */
+.consultBreak{ margin-top:12px; }
+
+.consultBreakTitle{ font-weight:900; font-size:16px; }
+.consultBreakText{ color: var(--muted); font-weight:700; }
+
+/* ===== responsive ===== */
+@media (max-width: 1024px){
+  .consultTop{ grid-template-columns: 1fr; }
+  .consultBottom{ grid-template-columns: 1fr; }
+  .consultTextarea{ min-height: 280px; }
+}
+
+/* планшеты/телефоны — кнопки в 2 колонки */
+@media (max-width: 700px){
+  .consultCta{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  .consultCta .btn.btnPrimary{ grid-column: 1 / -1; }
+}
+
+/* совсем узко — все кнопки в одну */
+@media (max-width: 420px){
+  .consultCta{ grid-template-columns: 1fr; }
+  .consultTextarea{ font-size: 18px; }
+}
+
+.consultPhotoCard{
+  margin-top: 20px;
+  padding: 0;            /* чтобы картинка была “во всю карточку” */
+  overflow: hidden;
+}
+
+.consultPhoto{
+  height: 186px;         /* подгони: 150–220 */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+.consultPhotoImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+   filter: contrast(1.02) saturate(1.02);
+}
+
+/* мобилка: чуть выше */
+@media (max-width: 520px){
+  .consultPhoto{ height: 190px; }
+}
+
+/* ===== consult photo card depth (fix) ===== */
+.card.consultPhotoCard{
+  /* внешняя тень = “объём” */
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.14),
+    0 1px 0 rgba(255,255,255,.06) !important;
+  border-color: color-mix(in srgb, var(--border) 70%, var(--accent) 30%);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.card.consultPhotoCard:hover{
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.18),
+    0 1px 0 rgba(255,255,255,.08) !important;
+  transform: translateY(-1px);
+}
+
+/* чуть “рамка” вокруг фото (чтобы не было плоско) */
+.consultPhoto{
+  position: relative;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 10%, transparent);
+}
+
+.consultPhoto::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  /* мягкая виньетка, чтобы картинка “вписалась” */
+  box-shadow: inset 0 0 40px rgba(0,0,0,.18);
+}
+
+/* photo INSIDE the “Если не хотите писать” card */
+.consultInlinePhoto{
+  margin-top: 16px;
+  height: 244px;                 /* оставляем твой размер */
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+
+  /* “внутренняя карточка”: рамка + мягкая тень */
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 10px 26px rgba(0,0,0,.18);
+}
+
+.consultInlinePhotoImg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: contrast(1.02) saturate(1.02);
+  transform: translateZ(0);
+}
+
+/* лёгкий градиент, чтобы фото “вписалось” в тему */
+.consultInlinePhotoOverlay{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,0) 0%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 78%,
+      color-mix(in srgb, var(--bg) 85%, transparent) 100%
+    );
+}
+
+/* мобилка */
+@media (max-width: 520px){
+  .consultInlinePhoto{ height: 190px; }
+}
+
+.consultInlinePhoto{
+  position: relative;
+}
+
+/* текстовый блок */
+.consultInlinePhotoText{
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  /* “стекло” под текст */
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.consultInlinePhotoTitle{
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.consultInlinePhotoSub{
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* чтобы текст был читаемее — усилим нижнее затемнение */
+.consultInlinePhotoOverlay{
+  z-index: 1;
+  background:
+    linear-gradient(180deg,
+      rgba(0,0,0,0) 0%,
+      color-mix(in srgb, var(--bg) 45%, transparent) 60%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 100%
+    );
+}
+
+/* ===== break slot (ONLY ONE VERSION) ===== */
+.consultBreak{ margin-top:12px; }
+
+.consultBreakCard{
+  position: relative;
+  min-height: 360px;
+  border-radius: var(--r);
+  overflow: hidden;
+
+  background-color: var(--bg);
+  background-image: url("/img/consult-break.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* легкая “подмешка” цвета темы */
+.consultBreakCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: var(--bg);
+  opacity: .18; /* 0.12–0.28 */
+}
+
+/* мягкая виньетка/затемнение, чтобы текст читался */
+.consultBreakCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 38%, rgba(0,0,0,.22) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 100%);
+  opacity: .9;
+}
+
+/* текст поверх (ВАЖНО: без background тут) */
+.consultBreakOverlay{
+  position:absolute;
+  inset:0;
+  z-index: 2;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  gap:6px;
+  padding:14px;
+}
+
+.consultBreakTitle{
+  font-weight:900;
+  font-size:16px;
+}
+
+.consultBreakText{
+  color: var(--muted);
+  font-weight:700;
+  max-width: 60ch;
+}
+
+@media (max-width: 520px){
+  .consultBreakCard{ min-height: 180px; }
+  .consultBreakText{ max-width: 40ch; }
+}

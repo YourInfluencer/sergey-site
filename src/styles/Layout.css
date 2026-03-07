@@ -9,11 +9,13 @@
   flex-direction:column;
 }
 
-.appMain{ flex: 1; }
+.appMain{
+  flex: 1;
+}
 
+/* wrapper */
 .pageFrame{
   position: relative;
-  background: var(--bg);
 }
 
 /* content above side images */
@@ -25,40 +27,48 @@
 /* hidden by default */
 .sideDecor{ display:none; }
 
-/* theme tuning */
+/* tuning */
 :root{
-  --sideWash: .18;     /* light: лёгкая “подстройка” под фон, НЕ молоко */
+  --contentMax: 1100px;
+
+  /*--sideOpacity: .90;*/        /* общая видимость картинки */
+  --sideWash: .55;           /* подмешивание фона (light сильнее) */
   --sideSat: 1.05;
   --sideCon: 1.04;
 
-  --sideFadeIn: 58%;   /* где начинается растворение к центру */
-  --sideFadeTB: 10%;   /* верх/низ чуть в фон (можешь поставить 0%) */
+  --fadeToCenter: 72px;      /* ширина растворения у ВНУТРЕННЕГО края */
+  --fadeTopBottom: 10vh;     /* плавно сверху/снизу */
 }
 
 :root[data-theme="dark"]{
-  --sideWash: .10;
+  
+  --sideWash: .30;
   --sideSat: 1.03;
   --sideCon: 1.02;
-
-  --sideFadeIn: 62%;
-  --sideFadeTB: 12%;
+  --fadeToCenter: 96px;
+  --fadeTopBottom: 12vh;
 }
 
+/* enable only on wide screens */
 @media (min-width: 1100px){
   .sideDecor{
     display:block;
     position: fixed;
     top: 0;
     bottom: 0;
-    width: max(240px, calc((100vw - 1100px) / 2));
-    pointer-events: none;
+
+    /* ✅ КЛЮЧЕВОЕ: ширина = реальный “гаттер”, чтобы НЕ залезало в центр */
+    width: calc((100vw - var(--contentMax)) / 2);
+
+    pointer-events:none;
     z-index: 1;
 
+    opacity: var(--sideOpacity);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    overflow: hidden;
+    overflow:hidden;
     transform: translateZ(0);
     filter: saturate(var(--sideSat)) contrast(var(--sideCon));
   }
@@ -67,66 +77,85 @@
     left: 0;
     background-image: url("/img/side-left.webp");
   }
+
   .sideDecorRight{
     right: 0;
     background-image: url("/img/side-right.webp");
   }
 
-  /* лёгкая подстройка фото под фон (НЕ обязателен, но помогает теме) */
+  /* лёгкая “подгонка” фото под фон, чтобы в light не было ощущения белой дымки */
   .sideDecor::before{
     content:"";
     position:absolute;
     inset:0;
-    pointer-events:none;
     background: var(--bg);
     opacity: var(--sideWash);
+    pointer-events:none;
   }
 
-  /*
-    МАСКА:
-    - у края экрана НЕТ градиента (сразу transparent)
-    - растворение начинается ближе к центру и уходит в var(--bg)
-  */
-
-  /* LEFT: к центру -> в bg, у левого края -> без градиента */
-  .sideDecorLeft::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:
-      /* top/bottom (можешь выключить, поставив --sideFadeTB: 0%) */
-      linear-gradient(to bottom,
-        var(--bg) 0%,
-        transparent var(--sideFadeTB),
-        transparent calc(100% - var(--sideFadeTB)),
-        var(--bg) 100%
-      ),
-      /* dissolve to center */
+  /* ✅ МАСКА: растворяем ТОЛЬКО у внутреннего края (к центру),
+     а внешний край (край экрана) — без градиента */
+  .sideDecorLeft{
+    -webkit-mask-image:
       linear-gradient(to right,
-        transparent 0%,
-        transparent var(--sideFadeIn),
-        var(--bg) 100%
+        #000 0,
+        #000 calc(100% - var(--fadeToCenter)),
+        transparent 100%
+      ),
+      linear-gradient(to bottom,
+        transparent 0,
+        #000 var(--fadeTopBottom),
+        #000 calc(100% - var(--fadeTopBottom)),
+        transparent 100%
       );
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right,
+        #000 0,
+        #000 calc(100% - var(--fadeToCenter)),
+        transparent 100%
+      ),
+      linear-gradient(to bottom,
+        transparent 0,
+        #000 var(--fadeTopBottom),
+        #000 calc(100% - var(--fadeTopBottom)),
+        transparent 100%
+      );
+            mask-composite: intersect;
   }
 
-  /* RIGHT: к центру -> в bg, у правого края -> без градиента */
-  .sideDecorRight::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background:
-      linear-gradient(to bottom,
-        var(--bg) 0%,
-        transparent var(--sideFadeTB),
-        transparent calc(100% - var(--sideFadeTB)),
-        var(--bg) 100%
-      ),
+  .sideDecorRight{
+    -webkit-mask-image:
       linear-gradient(to left,
-        transparent 0%,
-        transparent var(--sideFadeIn),
-        var(--bg) 100%
+        #000 0,
+        #000 calc(100% - var(--fadeToCenter)),
+        transparent 100%
+      ),
+      linear-gradient(to bottom,
+        transparent 0,
+        #000 var(--fadeTopBottom),
+        #000 calc(100% - var(--fadeTopBottom)),
+        transparent 100%
       );
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to left,
+        #000 0,
+        #000 calc(100% - var(--fadeToCenter)),
+        transparent 100%
+      ),
+      linear-gradient(to bottom,
+        transparent 0,
+        #000 var(--fadeTopBottom),
+        #000 calc(100% - var(--fadeTopBottom)),
+        transparent 100%
+      );
+            mask-composite: intersect;
+  }
+
+  /* Если хочешь “отрезать” пик в самый центр ещё сильнее */
+  @media (min-width: 1400px){
+    :root{ --fadeToCenter: 90px; }
+    :root[data-theme="dark"]{ --fadeToCenter: 120px; }
   }
 }

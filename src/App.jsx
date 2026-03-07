@@ -13,7 +13,7 @@ import Footer from "./components/Footer.jsx";
 
 const PHONE = "+7 (914) 774-24-68";
 const TG = "https://t.me/SergejVladimirovichVDK";
-const WA = "https://wa.me/70000000000"; // заглушка
+const WA = "https://wa.me/89147742468"; // заглушка
 
 function getTheme() {
   const saved = localStorage.getItem("theme");

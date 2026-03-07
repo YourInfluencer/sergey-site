@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/request.css";
 
 function digitsOnly(s) {
@@ -8,6 +8,7 @@ function digitsOnly(s) {
 
 export default function RequestPage({ onLeadSubmit }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state || {};
 
   const [name, setName] = useState("");
@@ -40,7 +41,7 @@ export default function RequestPage({ onLeadSubmit }) {
 
     try {
       setSending(true);
-      const data = await onLeadSubmit({
+      await onLeadSubmit({
         name,
         phone,
         comment,
@@ -64,7 +65,7 @@ export default function RequestPage({ onLeadSubmit }) {
       <div className="wrap">
         <h1 className="pageTitle">{title}</h1>
 
-        {/* Карточка выбранной темы (как у тебя на скрине) */}
+        {/* Карточка выбранной темы */}
         <div className="card" style={{ marginBottom: 12 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
             <div style={{ fontSize: 18 }}>{icon}</div>
@@ -81,13 +82,23 @@ export default function RequestPage({ onLeadSubmit }) {
             </ul>
           )}
 
+          {/* ✅ НОВОЕ: правильные переходы */}
           <div className="cta" style={{ marginTop: 12 }}>
-            <a className="btn btnPrimary" href="#form">
+            <button
+              className="btn btnPrimary"
+              type="button"
+              onClick={() => navigate("/services", { state: { from: "request", title } })}
+            >
               Оставить заявку по теме
-            </a>
-            <a className="btn btnGhost" href="#form">
+            </button>
+
+            <button
+              className="btn btnGhost"
+              type="button"
+              onClick={() => navigate("/consult", { state: { from: "request", title, hint } })}
+            >
               Нужна консультация
-            </a>
+            </button>
           </div>
         </div>
 
