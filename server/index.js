@@ -9,7 +9,7 @@ app.use((req, res, next) => {
   const allowed = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
-    "https://yourinfluencer.github.io"
+    "https://yourinfluencer.github.io",
   ];
 
   if (allowed.includes(origin)) {
@@ -33,6 +33,7 @@ async function sendToTelegram(text) {
   const resp = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    // можно добавить parse_mode, если захочешь жирный/моноширинный
     body: JSON.stringify({ chat_id: chatId, text }),
   });
 
@@ -64,6 +65,31 @@ function getIp(req) {
   return req.socket.remoteAddress || "unknown";
 }
 
+/**
+ * Маппинг "source" (из фронта) -> человекочитаемый путь
+ * Добавляй сюда новые источники, как только появятся.
+ */
+const SOURCE_TITLE = {
+  site: "Сайт",
+  site_form: "Сайт → форма",
+  contacts_modal: "Контакты → модалка (Оставьте контакты — мы перезвоним)",
+  request_page: "Вызвать мастера → страница заявки",
+  prices_form: "Цены → Оставьте заявку — мы перезвоним",
+  reviews_form: "Отзывы → Оставьте отзыв",
+  reviews_promo: "Отзывы → Получить консультацию (блок под отзывами)",
+  consult_template: "Консультация → шаблон (копирование/кнопки)", // если понадобится
+  consult_contacts: "Консультация → кнопка Контакты",            // если понадобится
+};
+
+function formatSourceRu(sourceRaw) {
+  const s = String(sourceRaw || "site").trim().slice(0, 40);
+  return SOURCE_TITLE[s] || `Сайт → ${s}`; // fallback, если неизвестно
+}
+
+function cleanStr(v, maxLen) {
+  return String(v || "").trim().slice(0, maxLen);
+}
+
 app.post("/api/lead", async (req, res) => {
   try {
     const ip = getIp(req);
@@ -81,7 +107,7 @@ app.post("/api/lead", async (req, res) => {
     }
 
     // honeypot
-    const hp = String(req.body?.hp || "").trim();
+    const hp = cleanStr(req.body?.hp, 40);
     if (hp) {
       // бот заполнил скрытое поле — молча “ok”, чтобы не учился обходить
       return res.json({ ok: true, id: leadIdVladivostok(), ts: Date.now() });
@@ -93,22 +119,27 @@ app.post("/api/lead", async (req, res) => {
       return res.status(429).json({ ok: false, error: "TOO_FAST_PAGE" });
     }
 
-    const name = String(req.body?.name || "").trim().slice(0, 60);
-    const phone = String(req.body?.phone || "").trim().slice(0, 40);
-    const comment = String(req.body?.comment || "").trim().slice(0, 800);
-    const source = String(req.body?.source || "site").trim().slice(0, 40);
+    const name = cleanStr(req.body?.name, 60);
+    const phone = cleanStr(req.body?.phone, 40);
+    const comment = cleanStr(req.body?.comment, 1200); // можно чуть больше
+    const sourceRaw = cleanStr(req.body?.source || "site", 40);
 
     const digits = phone.replace(/[^\d]/g, "");
     if (digits.length < 10) return res.status(400).json({ ok: false, error: "PHONE_INVALID" });
 
     const leadId = leadIdVladivostok();
 
-    const text =
+    const sourceRu = formatSourceRu(sourceRaw);
+
+    // Сообщение в TG: меньше “мусора”, больше смысла.
+    // Источник — по-русски и как путь.
+    let text =
       `🛠 Заявка с сайта #${leadId}\n` +
-      `Источник: ${source}\n` +
+      `Откуда: ${sourceRu}\n` +
       `Имя: ${name || "-"}\n` +
-      `Телефон: ${phone}\n` +
-      (comment ? `Комментарий: ${comment}` : "");
+      `Телефон: ${phone}\n`;
+
+    if (comment) text += `Комментарий: ${comment}`;
 
     await sendToTelegram(text);
 

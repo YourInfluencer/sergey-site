@@ -298,3 +298,24 @@
 .reviewsBreakText{
   z-index: 3;
 }
+
+/* honeypot */
+.hp{ position:absolute; left:-9999px; opacity:0; height:0; width:0; }
+
+/* simple captcha row */
+.reviewCaptcha{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  color: var(--text);
+  opacity: .9;
+  font-weight: 800;
+}
+
+.reviewCaptcha input{
+  width:18px;
+  height:18px;
+  accent-color: var(--accent);
+}

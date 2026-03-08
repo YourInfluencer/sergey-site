@@ -10,45 +10,47 @@ export default function Prices() {
   const [resultText, setResultText] = useState("");
 
   async function submit(e) {
-    e.preventDefault();
-    setResultText("");
+  e.preventDefault();
+  setResultText("");
 
-    const fd = new FormData(e.currentTarget);
-    const payload = {
-      name: String(fd.get("name") || ""),
-      phone: String(fd.get("phone") || ""),
-      comment: String(fd.get("comment") || ""),
-      source: "prices_form",
-    };
+  const formEl = e.currentTarget;          // ✅ сохранить ссылку на форму
+  const fd = new FormData(formEl);
 
-    const d = digitsOnly(payload.phone);
-    if (d.length < 10) {
-      setResultText("Введите телефон (минимум 10 цифр).");
-      return;
-    }
+  const payload = {
+    name: String(fd.get("name") || ""),
+    phone: String(fd.get("phone") || ""),
+    comment: String(fd.get("comment") || ""),
+    source: "prices_form",
+  };
 
-    try {
-      setSending(true);
-      const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
-
-      const resp = await fetch(`${API}/api/lead`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await resp.json().catch(() => ({}));
-      if (!resp.ok || !data.ok) throw new Error(data?.error || `HTTP_${resp.status}`);
-
-      setResultText(`Заявка отправлена ✅ №${data.id}`);
-      e.currentTarget.reset();
-    } catch (err) {
-      console.error(err);
-      setResultText("Не удалось отправить. Проверь, что сервер запущен.");
-    } finally {
-      setSending(false);
-    }
+  const d = digitsOnly(payload.phone);
+  if (d.length < 10) {
+    setResultText("Введите телефон (минимум 10 цифр).");
+    return;
   }
+
+  try {
+    setSending(true);
+    const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+    const resp = await fetch(`${API}/api/lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || data.ok === false) throw new Error(data?.error || `HTTP_${resp.status}`);
+
+    setResultText(`Заявка отправлена ✅ №${data.id ?? ""}`.trim());
+    formEl.reset();                         // ✅ теперь не null
+  } catch (err) {
+    console.error(err);
+    setResultText("Не удалось отправить. Проверь, что сервер запущен.");
+  } finally {
+    setSending(false);
+  }
+}
 
   return (
     <main>

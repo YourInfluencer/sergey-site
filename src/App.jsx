@@ -77,21 +77,43 @@ export default function App() {
   }
 
   async function sendLead(payload) {
-    const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+  const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-    const resp = await fetch(`${API}/api/lead`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+  const resp = await fetch(`${API}/api/lead`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-    const data = await resp.json().catch(() => ({}));
-    if (!resp.ok || !data.ok) {
-      const msg = data?.error || `HTTP_${resp.status}`;
-      throw new Error(msg);
-    }
-    return data; // { ok:true, id, ts }
+  // устойчиво читаем тело
+  const raw = await resp.text();
+  let data = {};
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    data = {};
   }
+
+  // если сервер вернул ошибку по HTTP — это ошибка
+  if (!resp.ok) {
+    const msg = data?.error || raw || `HTTP_${resp.status}`;
+    throw new Error(msg);
+  }
+
+  // ✅ если HTTP ok, но JSON пустой/без ok — считаем успехом
+  // (потому что у тебя факт отправки подтверждается TG)
+  if (data && data.ok === false) {
+    const msg = data?.error || "UNKNOWN_SERVER_ERROR";
+    throw new Error(msg);
+  }
+
+  // нормализуем
+  return {
+    ok: true,
+    id: data?.id ?? null,
+    ts: data?.ts ?? null,
+  };
+}
 
   async function onSubmitModal(e) {
     e.preventDefault();
