@@ -1,7 +1,9 @@
+// src/App.jsx
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-/*import "./App.css";*/
+import { SITE as CFG } from "./config/site.config.js";
 
+import NotFound from "./pages/NotFound.jsx";
 import Home from "./pages/Home.jsx";
 import Prices from "./pages/Prices.jsx";
 import Services from "./pages/Services.jsx";
@@ -11,10 +13,6 @@ import Reviews from "./pages/Reviews.jsx";
 
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
-
-const PHONE = "+7 (914) 774-24-68";
-const TG = "https://t.me/SergejVladimirovichVDK";
-const WA = "https://wa.me/89147742468"; // заглушка
 
 function getTheme() {
   const saved = localStorage.getItem("theme");
@@ -77,43 +75,38 @@ export default function App() {
   }
 
   async function sendLead(payload) {
-  const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+    const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-  const resp = await fetch(`${API}/api/lead`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+    const resp = await fetch(`${API}/api/lead`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-  // устойчиво читаем тело
-  const raw = await resp.text();
-  let data = {};
-  try {
-    data = raw ? JSON.parse(raw) : {};
-  } catch {
-    data = {};
+    const raw = await resp.text();
+    let data = {};
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      data = {};
+    }
+
+    if (!resp.ok) {
+      const msg = data?.error || raw || `HTTP_${resp.status}`;
+      throw new Error(msg);
+    }
+
+    if (data && data.ok === false) {
+      const msg = data?.error || "UNKNOWN_SERVER_ERROR";
+      throw new Error(msg);
+    }
+
+    return {
+      ok: true,
+      id: data?.id ?? null,
+      ts: data?.ts ?? null,
+    };
   }
-
-  // если сервер вернул ошибку по HTTP — это ошибка
-  if (!resp.ok) {
-    const msg = data?.error || raw || `HTTP_${resp.status}`;
-    throw new Error(msg);
-  }
-
-  // ✅ если HTTP ok, но JSON пустой/без ok — считаем успехом
-  // (потому что у тебя факт отправки подтверждается TG)
-  if (data && data.ok === false) {
-    const msg = data?.error || "UNKNOWN_SERVER_ERROR";
-    throw new Error(msg);
-  }
-
-  // нормализуем
-  return {
-    ok: true,
-    id: data?.id ?? null,
-    ts: data?.ts ?? null,
-  };
-}
 
   async function onSubmitModal(e) {
     e.preventDefault();
@@ -133,8 +126,9 @@ export default function App() {
         source: "contacts_modal",
       });
 
-      setSentText(`Заявка отправлена ✅ №${data.id}`);
-      showToast("ok", `Заявка отправлена ✅ №${data.id}`);
+      const msg = data?.id ? `Заявка отправлена ✅ №${data.id}` : "Заявка отправлена ✅";
+      setSentText(msg);
+      showToast("ok", msg);
       setTimeout(() => setIsContactsOpen(false), 1200);
     } catch (err) {
       console.error(err);
@@ -150,13 +144,13 @@ export default function App() {
       throw new Error("PHONE_INVALID_FRONT");
     }
     const data = await sendLead({ ...payload, source: payload.source || "site_form" });
-    showToast("ok", `Заявка отправлена ✅ №${data.id}`);
+    const msg = data?.id ? `Заявка отправлена ✅ №${data.id}` : "Заявка отправлена ✅";
+    showToast("ok", msg);
     return data;
   }
 
   return (
     <div className="appShell">
-      {/* toast */}
       {toast && (
         <div className={`toast toast-${toast.type}`} role="status" aria-live="polite">
           {toast.text}
@@ -176,33 +170,43 @@ export default function App() {
 
           <div className="pageContent">
             <Routes>
-              <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+              <Route
+                path="/"
+                element={
+                  <main>
+                    <Home phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} onOpenContacts={openContacts} />
+                  </main>
+                }
+              />
               <Route path="/services" element={<main><Services /></main>} />
               <Route path="/prices" element={<Prices />} />
               <Route path="/reviews" element={<main><Reviews onLeadSubmit={onLeadSubmit} /></main>} />
-              <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
+              <Route path="/consult" element={<main><Consult tg={CFG.tg} wa={CFG.wa} onOpenContacts={openContacts} /></main>} />
               <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
+
+              {/* ✅ 404 — ВСЕГДА ПОСЛЕДНИМ */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
       </div>
 
-      {/* footer (бордер снизу) */}
-      <Footer phone={PHONE} tg={TG} wa={WA} />
+      <Footer phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} />
 
-      {/* Модалка контактов */}
       {isContactsOpen && (
         <div className="modalOverlay" role="dialog" aria-modal="true" onMouseDown={closeContacts}>
           <div className="modalCard" onMouseDown={(e) => e.stopPropagation()}>
             <div className="modalHead">
               <div className="modalTitle">Контакты</div>
-              <button className="btnIcon" type="button" onClick={closeContacts} aria-label="Закрыть">✕</button>
+              <button className="btnIcon" type="button" onClick={closeContacts} aria-label="Закрыть">
+                ✕
+              </button>
             </div>
 
             <div className="contactLinks">
-              <a className="contactLink" href={`tel:${digitsOnly(PHONE)}`}>{PHONE}</a>
-              <a className="contactLink" href={TG} target="_blank" rel="noreferrer">Telegram</a>
-              <a className="contactLink" href={WA} target="_blank" rel="noreferrer">WhatsApp</a>
+              <a className="contactLink" href={`tel:${digitsOnly(CFG.phone)}`}>{CFG.phone}</a>
+              <a className="contactLink" href={CFG.tg} target="_blank" rel="noreferrer">Telegram</a>
+              <a className="contactLink" href={CFG.wa} target="_blank" rel="noreferrer">WhatsApp</a>
             </div>
 
             <div className="orDivider">

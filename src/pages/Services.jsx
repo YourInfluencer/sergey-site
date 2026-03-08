@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import Seo from "../components/Seo.jsx";
 import "../styles/Services.css";
 
 const QUICK = [
@@ -101,21 +101,14 @@ export default function Services() {
   }
 
   return (
+    <>
+    <Seo
+        title="Услуги"
+        description="Услуги ремонта и настройки во Владивостоке: телевизоры, компьютеры и ноутбуки, принтеры/МФУ, Wi-Fi/сеть, IP-камеры, телефоны и планшеты. Быстрый выбор проблемы и заявка."
+        path="/services"
+      />
     <section className="section">
-      <Helmet>
-        <title>Услуги — ремонт техники во Владивостоке</title>
-        <meta
-          name="description"
-          content="Услуги: ремонт телевизоров, ПК/ноутбуков, принтеров и МФУ, Wi-Fi/интернет, IP-камер, телефонов и планшетов. Быстрый выбор проблемы, выезд мастера, согласование цены до работ."
-        />
-        {/* OG */}
-        <meta property="og:title" content="Услуги — ремонт техники во Владивостоке" />
-        <meta
-          property="og:description"
-          content="Телевизоры, ПК/ноутбуки, принтеры, Wi-Fi, IP-камеры, телефоны/планшеты. Быстрый выбор проблемы и заявка с подсказками."
-        />
-      </Helmet>
-
+      
       <div className="wrap">
         <h1 className="pageTitle">Услуги</h1>
         <p className="muted">
@@ -234,5 +227,6 @@ export default function Services() {
         </div>
       </div>
     </section>
+    </>
   );
 }

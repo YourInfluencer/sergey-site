@@ -1,9 +1,9 @@
 // src/pages/Home.jsx
 import { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import "../styles/Home.css";
 import { TvIcon, LaptopIcon, PrinterIcon, WifiIcon, CctvIcon, ToolsIcon } from "../components/Icons.jsx";
+import Seo from "../components/Seo.jsx";
 
 export default function Home({ phone, tg, wa, onOpenContacts }) {
   const nav = useNavigate();
@@ -60,17 +60,14 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
   return (
     <>
-      <Helmet>
-        <title>Ремонт техники во Владивостоке — выезд, настройка, ремонт</title>
-        <meta
-          name="description"
-          content="Ремонт техники во Владивостоке: телевизоры, ноутбуки, ПК, принтеры, Wi-Fi, IP-камеры. Выезд по городу, согласование цены до работ, гарантия."
-        />
-        <link rel="canonical" href="https://yourinfluencer.github.io/#/" />
-      </Helmet>
+    <Seo
+      title="Ремонт техники во Владивостоке"
+      description="Ремонт и настройка техники во Владивостоке: телевизоры, компьютеры/ноутбуки, принтеры, Wi-Fi, IP-камеры. Выезд, согласование цены до работ, гарантия."
+      path="/"
+    />
 
-      {/* HERO */}
-      <section className="hero" id="home">
+    {/* HERO */}
+    <section className="hero" id="home">
         <div className="wrap heroGrid">
           <div>
             <h1>Ремонт техники во Владивостоке</h1>

@@ -1,8 +1,8 @@
 // src/pages/RequestPage.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import "../styles/request.css";
+import Seo from "../components/Seo.jsx";
+import "../styles/Request.css";
 
 function digitsOnly(s) {
   return String(s || "").replace(/[^\d]/g, "");
@@ -78,15 +78,14 @@ export default function RequestPage({ onLeadSubmit }) {
   const canonical = "https://yourinfluencer.github.io/#/request";
 
   return (
+    <>
+    <Seo
+        title="Заявка"
+        description="Оставьте заявку на ремонт/настройку техники во Владивостоке — перезвоним, уточним симптомы и согласуем стоимость."
+        path="/request"
+      />
     <section className="section">
-      <Helmet>
-        <title>{title} — ремонт техники во Владивостоке</title>
-        <meta
-          name="description"
-          content="Оставьте заявку: укажите модель и симптомы — перезвоним, подскажем варианты и согласуем цену до начала работ."
-        />
-        <link rel="canonical" href={canonical} />
-      </Helmet>
+      
 
       <div className="wrap">
         <h1 className="pageTitle">{title}</h1>
@@ -176,5 +175,6 @@ export default function RequestPage({ onLeadSubmit }) {
         </div>
       </div>
     </section>
+    </>
   );
 }

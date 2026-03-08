@@ -1,6 +1,6 @@
 // src/pages/Reviews.jsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import Seo from "../components/Seo.jsx";
 import "../styles/Reviews.css";
 import { REVIEWS } from "../data/reviews.data";
 
@@ -71,9 +71,9 @@ export default function Reviews({ onLeadSubmit }) {
   const [human, setHuman] = useState(false);
 
   // чтобы кулдаун “тикал” и текст обновлялся
-  const [nowTick, setNowTick] = useState(0);
+  const [tick, setTick] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setNowTick((x) => x + 1), 1000);
+    const t = setInterval(() => setTick((x) => x + 1), 1000);
     return () => clearInterval(t);
   }, []);
 
@@ -84,7 +84,7 @@ export default function Reviews({ onLeadSubmit }) {
     return [...REVIEWS].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   }, []);
 
-  const cdLeft = cooldownLeftSec(); // будет обновляться из-за nowTick
+  const cdLeft = cooldownLeftSec(); // будет обновляться из-за tick
 
   async function submitReview(e) {
     e.preventDefault();
@@ -195,18 +195,15 @@ export default function Reviews({ onLeadSubmit }) {
     }
   }
 
-  const canonical = "https://yourinfluencer.github.io/#/reviews";
-
   return (
+    <>
+    <Seo
+        title="Отзывы"
+        description="Отзывы клиентов о ремонте и настройке техники во Владивостоке. Можно оставить отзыв — публикуем после проверки."
+        path="/reviews"
+      />
     <section className="section">
-      <Helmet>
-        <title>Отзывы — ремонт техники во Владивостоке</title>
-        <meta
-          name="description"
-          content="Отзывы клиентов о ремонте и настройке техники. Оставьте отзыв — публикуем после проверки."
-        />
-        <link rel="canonical" href={canonical} />
-      </Helmet>
+      
 
       <div className="wrap">
         <h1 className="pageTitle">Отзывы</h1>
@@ -311,5 +308,6 @@ export default function Reviews({ onLeadSubmit }) {
         </div>
       </div>
     </section>
+    </>
   );
 }

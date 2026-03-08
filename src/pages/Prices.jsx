@@ -1,6 +1,6 @@
 // src/pages/Prices.jsx
 import { useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import Seo from "../components/Seo.jsx";
 import "../styles/Prices.css";
 
 function digitsOnly(s) {
@@ -73,15 +73,14 @@ export default function Prices() {
   }
 
   return (
+    <>
+    <Seo
+        title="Цены"
+        description="Ориентиры по стоимости ремонта и настройки техники во Владивостоке. Консультация бесплатно, цену согласуем до начала работ."
+        path="/prices"
+      />
     <main>
-      <Helmet>
-        <title>Цены на ремонт техники во Владивостоке — ориентиры и примеры работ</title>
-        <meta
-          name="description"
-          content="Ориентиры по стоимости ремонта техники во Владивостоке: диагностика, настройка, ремонт/замена деталей. Цена согласуется до начала работ."
-        />
-        <link rel="canonical" href="https://yourinfluencer.github.io/#/prices" />
-      </Helmet>
+      
 
       <section className="section">
         <div className="wrap">
@@ -250,5 +249,6 @@ export default function Prices() {
         </div>
       </section>
     </main>
+    </>
   );
 }

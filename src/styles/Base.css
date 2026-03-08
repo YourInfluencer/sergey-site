@@ -188,3 +188,26 @@ h2{margin:0 0 10px;font-size:24px}
 .leadForm .sentOk{
   grid-column: 1 / -1;
 }
+
+/* ===== 404 ===== */
+.notFoundCard{
+  text-align:center;
+  padding: 22px;
+}
+
+.notFoundCode{
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .5px;
+  margin-bottom: 10px;
+
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--accent) 70%, var(--text)),
+    color-mix(in srgb, var(--accent) 25%, var(--text))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: .95;
+}

@@ -1,7 +1,7 @@
 // src/pages/Consult.jsx
 import { useEffect, useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import "../styles/Consult.css";
+import Seo from "../components/Seo.jsx";
 
 const LS_KEY = "consult_template_v2";
 
@@ -77,13 +77,11 @@ export default function Consult({ tg, wa, onOpenContacts }) {
   const [text, setText] = useState(defaultTemplate);
   const [copied, setCopied] = useState(false);
 
-  // load saved
   useEffect(() => {
     const saved = localStorage.getItem(LS_KEY);
     if (saved && saved.trim()) setText(saved);
   }, []);
 
-  // autosave
   useEffect(() => {
     const t = setTimeout(() => localStorage.setItem(LS_KEY, text), 250);
     return () => clearTimeout(t);
@@ -101,14 +99,14 @@ export default function Consult({ tg, wa, onOpenContacts }) {
   }
 
   return (
+    <>
+    <Seo
+        title="Консультация"
+        description="Бесплатная консультация по ремонту техники во Владивостоке: напишите модель, симптомы и после чего началось — подскажем варианты и цену."
+        path="/consult"
+      />
     <section className="section">
-      <Helmet>
-        <title>Консультация — ремонт техники во Владивостоке</title>
-        <meta
-          name="description"
-          content="Бесплатная консультация по ремонту техники во Владивостоке: напишите модель, симптомы и после чего началось — подскажем варианты и цену."
-        />
-      </Helmet>
+      
 
       <div className="wrap">
         <h1 className="pageTitle">Консультация</h1>
@@ -116,9 +114,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
           Быстрее всего отвечаем, когда есть <b>модель</b>, <b>симптомы</b> и <b>после чего началось</b>.
         </p>
 
-        {/* TOP (template + quick) */}
         <div className="consultTop">
-          {/* MAIN */}
           <div className="card consultMain">
             <div className="cardTitle">Сообщение-шаблон (автосохранение)</div>
 
@@ -156,7 +152,6 @@ export default function Consult({ tg, wa, onOpenContacts }) {
             </div>
           </div>
 
-          {/* QUICK */}
           <div className="card consultQuick">
             <div className="cardTitle">Частые ситуации (1 клик)</div>
 
@@ -180,7 +175,6 @@ export default function Consult({ tg, wa, onOpenContacts }) {
           </div>
         </div>
 
-        {/* BREAK SLOT (перебивка) */}
         <div className="consultBreak" aria-hidden="true">
           <div className="consultBreakCard">
             <div className="consultBreakOverlay">
@@ -190,9 +184,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
           </div>
         </div>
 
-        {/* BOTTOM (checklist + right column) */}
         <div className="consultBottom">
-          {/* LEFT */}
           <div className="card">
             <div className="cardTitle">Что мы уточним</div>
             <div className="checkList">
@@ -205,7 +197,6 @@ export default function Consult({ tg, wa, onOpenContacts }) {
             </div>
           </div>
 
-          {/* RIGHT (stack) */}
           <div className="consultBottomRight">
             <div className="card">
               <div className="cardTitle">Если не хотите писать</div>
@@ -217,7 +208,6 @@ export default function Consult({ tg, wa, onOpenContacts }) {
                 Открыть контакты
               </button>
 
-              {/* PHOTO (inside same card) */}
               <div className="consultInlinePhoto" aria-hidden="true">
                 <img className="consultInlinePhotoImg" src="/img/consult-call.webp" alt="" loading="lazy" />
                 <div className="consultInlinePhotoOverlay" />
@@ -235,5 +225,6 @@ export default function Consult({ tg, wa, onOpenContacts }) {
         </div>
       </div>
     </section>
+    </>
   );
 }
