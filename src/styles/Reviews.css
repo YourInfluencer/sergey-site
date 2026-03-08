@@ -1,0 +1,300 @@
+.reviewsGrid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:12px;
+  margin-top:12px;
+}
+
+.reviewCard{ padding:14px; }
+
+.reviewHead{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.reviewAvatar{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+}
+
+.reviewName{ font-weight:900; line-height:1.1; }
+
+.reviewText{
+  color: var(--text);
+  opacity: .92;
+  line-height: 1.45;
+}
+
+.reviewTag{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+}
+
+.reviewFormCard{ padding:16px; }
+.reviewTextarea{ min-height: 140px; }
+
+/* ===== Review form layout ===== */
+.reviewForm{
+  display: grid;
+  grid-template-columns: 1fr 1fr auto; /* имя | телефон | кнопка */
+  gap: 10px;
+  align-items: center;
+}
+
+/* textarea на всю ширину */
+.reviewTextarea{
+  grid-column: 1 / -1;
+  min-height: 140px; /* у тебя уже есть, можно оставить */
+}
+
+/* сообщение результата тоже на всю ширину */
+.reviewForm .sentOk{
+  grid-column: 1 / -1;
+}
+
+/* адаптив: на планшетах кнопку вниз */
+@media (max-width: 900px){
+  .reviewForm{
+    grid-template-columns: 1fr 1fr;
+  }
+  .reviewForm .btn{
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* мобилка: всё в одну колонку */
+@media (max-width: 520px){
+  .reviewForm{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px){
+  .reviewsGrid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px){
+  .reviewsGrid{ grid-template-columns: 1fr; }
+}
+
+/* ===== IMAGE BREAK (между формой отзыва и стрелкой) ===== */
+.reviewsBreakImg{
+  margin: 8px 0 14px;
+  height: 360px; /* 140–220 */
+  border-radius: var(--r);
+  overflow: hidden;
+
+  background-image: url("/img/reviews-promo.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: saturate(1.04) contrast(1.03);
+  position: relative;
+}
+
+.reviewsBreakImg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--bg) 55%, transparent) 0%,
+      rgba(0,0,0,0) 35%,
+      color-mix(in srgb, var(--bg) 78%, transparent) 100%
+    );
+}
+
+/* ===== BLUE RIBBON ===== */
+.reviewsPromoTop{
+  position: relative;
+  padding: 10px 0 12px;
+}
+
+.reviewsPromoTopInner{
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1100px;
+  padding: 20px 18px; /* жирнее */
+  text-align:center;
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: #fff;
+
+  background: color-mix(in srgb, var(--accent) 78%, #0b1020);
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+  overflow: hidden;
+
+  /* растворяем края */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+
+.reviewsPromoTopInner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(90deg, var(--bg) 0%, rgba(0,0,0,0) 16%, rgba(0,0,0,0) 84%, var(--bg) 100%);
+  opacity: .22;
+}
+
+/* ===== PROMO CARD ===== */
+.reviewsPromoCard{
+  width: 100%;
+  max-width: 1100px;   /* если у тебя wrap ≈ 1100 */
+  margin: 12px auto 18px;
+  padding: 18px;
+  text-align:center;
+
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.14),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.reviewsPromoTitle{
+  font-weight: 900;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.reviewsPromoForm{
+  display:grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items:center;
+}
+
+.reviewsPromoBottomText{
+  margin-top: 12px;
+  font-weight: 900;
+  opacity: .9;
+}
+
+@media (max-width: 900px){
+  .reviewsPromoForm{ grid-template-columns: 1fr 1fr; }
+  .reviewsPromoForm .btn{
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content:center;
+  }
+}
+
+@media (max-width: 520px){
+  .reviewsBreakImg{ width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto; }
+  .reviewsPromoTitle{ font-size: 18px; }
+  .reviewsPromoForm{ grid-template-columns: 1fr; }
+  .reviewsPromoTopInner{ padding: 22px 14px; font-size: 15px; }
+}
+
+/* ===== Promo inputs: как все поля сайта ===== */
+.reviewsPromoForm .input{
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  padding: 12px 14px;
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.reviewsPromoForm .input::placeholder{
+  color: color-mix(in srgb, var(--muted) 92%, transparent);
+  opacity: 1;
+}
+
+.reviewsPromoForm .input:focus{
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.reviewsBreakImg{
+  position: relative; /* важно */
+}
+
+/* затемнение снизу чуть усилим, чтобы текст читался */
+.reviewsBreakImg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%);
+}
+
+/* стеклянная плашка с текстом */
+.reviewsBreakText{
+  position:absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.reviewsBreakTitle{
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.reviewsBreakSub{
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* затемнение всей фотокарточки + усиление снизу */
+.reviewsBreakImg::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  /* общая вуаль + лёгкая виньетка */
+  background:
+    radial-gradient(120% 90% at 50% 30%, rgba(0,0,0,0) 35%, rgba(0,0,0,.22) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.18) 100%);
+  z-index: 1;
+}
+
+/* твой низовой градиент (оставляем), но ставим поверх общей вуали */
+.reviewsBreakImg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%);
+  z-index: 2;
+}
+
+/* текст — выше затемнений */
+.reviewsBreakText{
+  z-index: 3;
+}

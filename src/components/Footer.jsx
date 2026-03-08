@@ -17,17 +17,14 @@ export default function Footer({ phone, tg, wa }) {
 
         {/* центр: контакты */}
         <div className="footerCenter" aria-label="Контакты">
-          <a className="footerLink" href={`tel:${digitsPhone(phone)}`}>
-            {phone}
-          </a>
-          <span className="dot">•</span>
-          <a className="footerLink" href={tg} target="_blank" rel="noreferrer">
-            Telegram
-          </a>
-          <span className="dot">•</span>
-          <a className="footerLink" href={wa} target="_blank" rel="noreferrer">
-            WhatsApp
-          </a>
+          <div className="footerCenterTitle">Контакты:</div>
+          <div className="footerCenterLinks">
+            <a className="footerLink" href={`tel:${digitsPhone(phone)}`}>{phone}</a>
+            <span className="sep" aria-hidden="true" />
+            <a className="footerLink" href={tg} target="_blank" rel="noreferrer">Telegram</a>
+            <span className="sep" aria-hidden="true" />
+            <a className="footerLink" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+          </div>
         </div>
 
         {/* справа: копирайт */}

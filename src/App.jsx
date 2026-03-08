@@ -7,6 +7,7 @@ import Prices from "./pages/Prices.jsx";
 import Services from "./pages/Services.jsx";
 import Consult from "./pages/Consult.jsx";
 import RequestPage from "./pages/RequestPage.jsx";
+import Reviews from "./pages/Reviews.jsx";
 
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
@@ -156,6 +157,7 @@ export default function App() {
               <Route path="/" element={<main><Home phone={PHONE} tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
               <Route path="/services" element={<main><Services /></main>} />
               <Route path="/prices" element={<Prices />} />
+              <Route path="/reviews" element={<main><Reviews onLeadSubmit={onLeadSubmit} /></main>} />
               <Route path="/consult" element={<main><Consult tg={TG} wa={WA} onOpenContacts={openContacts} /></main>} />
               <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
             </Routes>

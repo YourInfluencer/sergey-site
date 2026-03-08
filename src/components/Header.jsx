@@ -39,6 +39,7 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
           <button className="navLink navBtn" type="button" onClick={goHomeTop}>Главная</button>
           <Link className="navLink" to="/services">Услуги</Link>
           <Link className="navLink" to="/prices">Цены</Link>
+          <Link className="navLink" to="/reviews">Отзывы</Link>
           <Link className="navLink" to="/consult">Консультация</Link>
           <Link className="navLink" to="/request">Вызвать мастера</Link>
           <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>Контакты</button>
@@ -60,6 +61,7 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
             <button className="mobileLink mobileBtn" type="button" onClick={goHomeTop}>Главная</button>
             <Link className="mobileLink" to="/services" onClick={() => setMenuOpen(false)}>Услуги</Link>
             <Link className="mobileLink" to="/prices" onClick={() => setMenuOpen(false)}>Цены</Link>
+            <Link className="mobileLink" to="/reviews" onClick={() => setMenuOpen(false)}>Отзывы</Link>
             <Link className="mobileLink" to="/consult" onClick={() => setMenuOpen(false)}>Консультация</Link>
             <Link className="mobileLink" to="/request" onClick={() => setMenuOpen(false)}>Вызвать мастера</Link>
           </div>

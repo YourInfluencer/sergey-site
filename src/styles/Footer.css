@@ -4,13 +4,25 @@
   position: relative;
   z-index: 100;
 }
+
+/* Чтобы крайние элементы не липли к краям экрана */
 .footerBarInner{
   display:flex;
   align-items:center;
   gap:12px;
-  padding:12px 0;
+  padding:12px 16px; /* <-- было 12px 0 */
 }
+
+/* На очень широких можно убрать боковые паддинги, если wrap и так ограничивает */
+@media (min-width: 1150px){
+  .footerBarInner{
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .footerLeft, .footerRight{ white-space:nowrap; }
+
 .footerCenter{
   flex:1;
   display:flex;
@@ -20,20 +32,109 @@
   flex-wrap:wrap;
   font-weight:700;
 }
-.footerLink{ color:var(--text); opacity:.9; font-weight:700; text-decoration:none; }
+
+.footerLink{
+  color:var(--text);
+  opacity:.9;
+  font-weight:700;
+  text-decoration:none;
+}
 .footerLink:hover{ opacity:1; text-decoration:none; }
 
-@media (max-width: 820px){
+/* ===== DESKTOP >= 800px: точки между ссылками ===== */
+.footerCenterTitle{ display:none; }
+.footerCenterLinks{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+/* на десктопе: sep = точка */
+@media (min-width: 800px){
+  .footerCenterLinks{
+    flex-direction:row;
+    justify-content:center;
+  }
+
+  .footerCenterLinks .sep{
+    display:inline-block;
+    width:auto;
+    height:auto;
+    background:none;
+    opacity:.55;
+    line-height:1;
+  }
+  .footerCenterLinks .sep::before{
+    content:"•";
+    display:inline-block;
+    transform: translateY(-1px);
+  }
+
+  /* на всякий: отключаем старые попытки через ::before */
+  .footerCenterLinks a::before{
+    content:none !important;
+  }
+}
+
+/* ===== MOBILE < 800px: вертикально + красивые полоски ===== */
+@media (max-width: 799px){
   .footerBarInner{
     flex-direction:column;
     align-items:center;
     text-align:center;
-    gap:8px;
+    gap:12px;
+    padding:14px 16px;
   }
-  .footerLeft, .footerRight{
+
+  .footerLeft,
+  .footerRight{
     width:100%;
     display:flex;
     justify-content:center;
+    white-space:normal;
   }
-  .footerCenter{ justify-content:center; }
+
+  .footerLeft{ margin-bottom:6px; }
+
+  .footerCenter{
+    width:100%;
+    flex:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+
+  .footerCenterTitle{
+    display:block;
+    font-weight:900;
+    opacity:.92;
+    margin-top:2px;
+  }
+
+  .footerCenterLinks{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+
+  /* sep = полоска */
+  .footerCenterLinks .sep{
+    display:block;
+    width:72px;
+    height:2px;
+    border-radius:999px;
+    opacity:.95;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in srgb, var(--text) 28%, transparent) 25%,
+      color-mix(in srgb, var(--text) 28%, transparent) 75%,
+      transparent 100%
+    );
+  }
+
+  .footerRight{ margin-top:8px; }
 }
