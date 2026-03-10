@@ -1,10 +1,10 @@
 // src/components/Seo.jsx
 import { Helmet } from "react-helmet-async";
-import { SITE as CFG } from "../config/site.config.js";
+import { SITE } from "../config/site.config.js";
 
 export default function Seo({ title, description, path = "/", noindex = false }) {
-  const canonical = `${CFG.domain}${path}`;
-  const fullTitle = title ? `${title} — ${CFG.brand}` : CFG.brand;
+  const canonical = `${SITE.domain}${path}`;
+  const fullTitle = title ? `${title} — ${SITE.brand}` : SITE.brand;
 
   return (
     <Helmet>
@@ -14,7 +14,7 @@ export default function Seo({ title, description, path = "/", noindex = false })
       <link rel="canonical" href={canonical} />
 
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={CFG.brand} />
+      <meta property="og:site_name" content={SITE.brand} />
       <meta property="og:title" content={fullTitle} />
       {description && <meta property="og:description" content={description} />}
       <meta property="og:url" content={canonical} />

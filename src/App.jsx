@@ -183,8 +183,6 @@ export default function App() {
               <Route path="/reviews" element={<main><Reviews onLeadSubmit={onLeadSubmit} /></main>} />
               <Route path="/consult" element={<main><Consult tg={CFG.tg} wa={CFG.wa} onOpenContacts={openContacts} /></main>} />
               <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
-
-              {/* ✅ 404 — ВСЕГДА ПОСЛЕДНИМ */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

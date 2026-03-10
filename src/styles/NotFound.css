@@ -1,0 +1,66 @@
+/* src/styles/NotFound.css */
+
+.nfCard{
+  padding: 18px;
+}
+
+.nfTop{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  margin-bottom: 12px;
+}
+
+.nfCode{
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: .5px;
+
+  padding: 14px 16px;
+  border-radius: 18px;
+
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
+}
+
+.nfTitle{
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.nfText{
+  margin: 8px 0 0;
+}
+
+.nfActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 14px;
+}
+
+.nfHint{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 520px){
+  .nfTop{
+    align-items:flex-start;
+  }
+  .nfCode{
+    font-size: 36px;
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+  .nfTitle{
+    font-size: 22px;
+  }
+  .nfActions .btn{
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -15,6 +15,7 @@ import "./styles/Toast.css";
 import "./styles/Consult.css";
 import "./styles/Reviews.css";
 import "./styles/Request.css"; // или "./styles/request.css" — как у тебя реально называется файл
+import "./styles/NotFound.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

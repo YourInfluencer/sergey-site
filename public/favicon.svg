@@ -1,10 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0" x2="1">
-      <stop offset="0" stop-color="#2f6cff"/>
-      <stop offset="1" stop-color="#6aa8ff"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="url(#g)"/>
-  <path d="M18 40l8-16 6 10 6-12 8 18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="210mm" height="297mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 21000 29700"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil1 {fill:#145BFF}
+    .fil0 {fill:#E7E7EA}
+   ]]>
+  </style>
+ </defs>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polygon class="fil0" points="7097.76,18529.6 7186.75,18930.06 7542.72,19182.2 13253.04,19182.2 12244.46,17135.38 11918.16,16883.24 9070.41,16883.24 7438.89,18069.8 7157.08,18351.61 "/>
+  <polygon class="fil0" points="12189.63,14233 11826.93,13742.56 11352.07,13452.6 10710.6,13398.67 10277.7,13572.19 9782.48,14095.47 9668.47,14369.89 9670.58,14998.78 6615.33,17211.52 7379.4,17361.16 9870.37,15577.4 10255.55,15883.5 10732.71,16081.05 11178.83,16092.82 11557.26,15954.85 11939.86,15650.53 12200.33,15232.02 12287.44,14605.49 "/>
+  <polygon class="fil0" points="14988.38,11543.72 12422.45,13827.84 12377.95,13946.5 15967.29,21154.86 16367.76,21495.99 16753.4,21644.32 19497.32,21644.32 19749.46,21392.17 19660.47,21036.2 "/>
+  <polygon class="fil0" points="12437.28,6411.84 12096.14,6233.86 8892.43,6233.86 8625.45,6352.51 8432.64,6545.33 1224.28,21258.68 1253.95,21436.67 1476.42,21644.32 4175.85,21644.32 4605.98,21466.33 4976.78,21110.37 5940.86,19167.37 5317.91,19226.7 4843.29,19019.05 4620.81,18796.57 4442.83,18470.26 4383.5,18173.63 4442.83,17743.5 4591.15,17476.52 4843.29,17224.38 5139.93,17076.06 5807.37,17076.06 6104.01,17224.38 6326.49,17432.03 7023.6,16957.4 10479.45,9778.71 12199.97,13249.4 14706.58,10980.1 13015.73,7450.08 "/>
+  <ellipse class="fil1" cx="5489.69" cy="18135.02" rx="1142.74" ry="1125.61"/>
+  <rect class="fil1" transform="matrix(-0.252748 -0.360961 0.360961 -0.252748 6561.63 17934.7)" width="1303.47" height="3066.72"/>
+  <ellipse class="fil1" cx="16507.22" cy="9793.52" rx="1142.74" ry="1125.61"/>
+  <rect class="fil1" transform="matrix(-0.217025 -0.435285 0.329357 -0.304914 14986.8 11551.6)" width="1303.47" height="3066.72"/>
+ </g>
 </svg>

@@ -1,35 +1,49 @@
 // src/pages/NotFound.jsx
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
-import "../styles/Base.css";
+import "../styles/NotFound.css";
 
 export default function NotFound() {
+  const nav = useNavigate();
+
   return (
-    <main>
+    <>
       <Seo
         title="Страница не найдена"
-        description="Такой страницы нет. Перейдите на главную или посмотрите услуги."
+        description="Ошибка 404. Такой страницы нет. Вернитесь на главную или выберите раздел."
         path="/404"
         noindex
       />
 
-      <section className="section">
+      <main className="section">
         <div className="wrap">
-          <div className="card notFoundCard">
-            <div className="notFoundCode">404</div>
-            <div className="cardTitle" style={{ marginBottom: 6 }}>Страница не найдена</div>
-            <p className="muted" style={{ marginTop: 0 }}>
-              Возможно, ссылка устарела или страница была перенесена.
-            </p>
+          <div className="card nfCard">
+            <div className="nfTop">
+              <div className="nfCode">404</div>
+              <div>
+                <h1 className="nfTitle">Страница не найдена</h1>
+                <p className="muted nfText">
+                  Возможно, ссылка устарела или страница была перенесена.
+                </p>
+              </div>
+            </div>
 
-            <div className="cta" style={{ marginTop: 12 }}>
-              <Link className="btn btnPrimary" to="/">На главную</Link>
+            <div className="nfActions">
+              <button className="btn btnPrimary" type="button" onClick={() => nav("/")}>
+                На главную
+              </button>
               <Link className="btn btnGhost" to="/services">Услуги</Link>
               <Link className="btn btnGhost" to="/prices">Цены</Link>
+              <Link className="btn btnGhost" to="/reviews">Отзывы</Link>
+              <Link className="btn btnGhost" to="/consult">Консультация</Link>
+            </div>
+
+            <div className="nfHint muted small">
+              Если вы открывали ссылку из закладки — попробуйте обновить её.
             </div>
           </div>
         </div>
-      </section>
-    </main>
+      </main>
+    </>
   );
 }

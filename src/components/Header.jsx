@@ -8,12 +8,14 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
 
   function goHomeTop() {
     setMenuOpen(false);
+
     if (location.pathname === "/") {
       const el = document.getElementById("home");
       if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       else window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
+
     navigate("/");
     setTimeout(() => {
       const el = document.getElementById("home");
@@ -25,9 +27,10 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
   return (
     <header className="topbar">
       <div className="wrap topbarInner">
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button className="brand brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
-            <div className="brandText">Лого</div>
+        <div className="topbarLeft">
+          <button className="brandBtn" type="button" onClick={goHomeTop} aria-label="На главную">
+            <span className="brandLogoImg" aria-hidden="true" />
+            <span className="srOnly">Алгоритм</span>
           </button>
 
           <button className="btnIcon" type="button" onClick={onToggleTheme} aria-label="Переключить тему">

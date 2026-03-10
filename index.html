@@ -24,11 +24,9 @@
       content="Телевизоры, ПК/ноутбуки, принтеры, Wi-Fi, IP-камеры, телефоны/планшеты. Согласуем цену до начала работ."
     />
     <meta property="og:url" content="https://algorithm-vladivostok.ru/" />
-    <!-- Если появится og-cover.webp — раскомментируй
     <meta property="og:image" content="https://algorithm-vladivostok.ru/og-cover.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    -->
 
     <!-- Twitter (база) -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -37,7 +35,7 @@
       name="twitter:description"
       content="Цена до начала работ, выезд по городу, гарантия. Телевизоры, ПК, принтеры, Wi-Fi, камеры, телефоны."
     />
-    <!-- <meta name="twitter:image" content="https://algorithm-vladivostok.ru/og-cover.webp" /> -->
+    <meta name="twitter:image" content="https://algorithm-vladivostok.ru/og-cover.webp" />
 
     <!-- Favicons -->
     <link rel="icon" href="/favicon.svg" />
@@ -52,26 +50,27 @@
       rel="stylesheet"
     />
 
-    <!-- LocalBusiness schema -->
+    <!-- LocalBusiness schema (валидный JSON-LD) -->
     <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"LocalBusiness",
-  "@id":"https://algorithm-vladivostok.ru/#localbusiness",
-  "name":"Алгоритм",
-  "url":"https://algorithm-vladivostok.ru/",
-  "telephone":"+7 (914) 774-24-68",
-  "areaServed":"Владивосток",
-  "address":{
-    "@type":"PostalAddress",
-    "addressLocality":"Владивосток",
-    "addressCountry":"RU"
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://algorithm-vladivostok.ru/#localbusiness",
+  "name": "Алгоритм",
+  "url": "https://algorithm-vladivostok.ru/",
+  "telephone": "+7 (914) 774-24-68",
+  "areaServed": "Владивосток",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Владивосток",
+    "addressRegion": "Приморский край",
+    "addressCountry": "RU"
   },
-  "sameAs":[
+  "sameAs": [
     "https://t.me/SergejVladimirovichVDK",
     "https://wa.me/89147742468"
   ],
-  "serviceType":[
+  "serviceType": [
     "Ремонт телевизоров",
     "Ремонт компьютеров и ноутбуков",
     "Настройка Wi-Fi/роутеров",

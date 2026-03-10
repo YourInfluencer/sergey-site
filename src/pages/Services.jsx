@@ -1,3 +1,4 @@
+// src/pages/Services.jsx
 import { useNavigate } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
 import "../styles/Services.css";
@@ -14,7 +15,7 @@ const QUICK = [
   { label: "Принтер Wi-Fi/драйверы", prefill: "Принтер: не подключается по Wi-Fi / драйверы.", cat: "Принтеры и МФУ" },
   { label: "Wi-Fi/интернет", prefill: "Wi-Fi: слабый сигнал / пропадает интернет.", cat: "Интернет и сеть" },
   { label: "IP-камера", prefill: "IP-камера: нет доступа / не пишет / не подключается.", cat: "IP-камеры" },
-  { label: "Телефон/планшет (экран/зарядка)", prefill: "Телефон/планшет: экран/сенсор/не заряжается.", cat: "Телефоны и планшеты" },
+  { label: "Телефон/планшет", prefill: "Телефон/планшет: экран/сенсор/не заряжается.", cat: "Телефоны и планшеты" },
 ];
 
 const CATS = [
@@ -102,131 +103,125 @@ export default function Services() {
 
   return (
     <>
-    <Seo
+      <Seo
         title="Услуги"
-        description="Услуги ремонта и настройки во Владивостоке: телевизоры, компьютеры и ноутбуки, принтеры/МФУ, Wi-Fi/сеть, IP-камеры, телефоны и планшеты. Быстрый выбор проблемы и заявка."
+        description="Услуги ремонта и настройки техники во Владивостоке: телевизоры, компьютеры и ноутбуки, принтеры/МФУ, Wi-Fi/сеть, IP-камеры, телефоны и планшеты. Быстрый выбор проблемы и заявка."
         path="/services"
       />
-    <section className="section">
-      
-      <div className="wrap">
-        <h1 className="pageTitle">Услуги</h1>
-        <p className="muted">
-          Выберите категорию — мы подставим подсказку в заявку. Если вашей проблемы нет в списке — просто напишите модель и симптомы.
-        </p>
 
-        <div className="card">
-          <div className="cardTitle">Быстрый выбор проблемы</div>
+      <section className="section">
+        <div className="wrap">
+          <h1 className="pageTitle">Услуги</h1>
+          <p className="muted">
+            Выберите категорию — мы подставим подсказку в заявку. Если вашей проблемы нет в списке — просто напишите модель и симптомы.
+          </p>
 
-          <div className="quickGrid">
-            {QUICK.map((q) => (
+          <div className="card">
+            <div className="cardTitle">Быстрый выбор проблемы</div>
+
+            <div className="quickGrid">
+              {QUICK.map((q) => (
+                <button
+                  key={q.label}
+                  className="quickBtn"
+                  type="button"
+                  onClick={() =>
+                    goRequest(q.prefill, {
+                      title: q.cat,
+                      hint: "Напишите модель и симптомы — так мы быстрее скажем варианты.",
+                    })
+                  }
+                >
+                  <span className="quickLabel">{q.label}</span>
+                  <span className="quickArrow">→</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="quickCtaRow">
               <button
-                key={q.label}
-                className="quickBtn"
+                className="btn btnPrimary"
                 type="button"
-                onClick={() =>
-                  goRequest(q.prefill, {
-                    title: q.cat,
-                    hint: "Напишите модель и симптомы — так мы быстрее скажем варианты.",
-                  })
-                }
+                onClick={() => goRequest("", { title: "Заявка", hint: "Укажите модель и симптомы — и мы перезвоним." })}
               >
-                <span className="quickLabel">{q.label}</span>
-                <span className="quickArrow">→</span>
+                Оставить заявку
               </button>
+              <span className="muted small">или выберите категорию ниже</span>
+            </div>
+          </div>
+
+          <div className="photoBanner photoBannerServices" aria-label="Сервисный ремонт">
+            <img
+              className="photoBannerImg"
+              src="/img/banner-services.webp"
+              alt="Мастер аккуратно ремонтирует электронику"
+              loading="lazy"
+            />
+            <div className="photoBannerOverlay">
+              <div className="photoBannerTitle">Диагностика → варианты → согласование</div>
+              <div className="photoBannerText">Понятно объясним и назовём цену до начала работ.</div>
+            </div>
+          </div>
+
+          <div className="servicesGrid">
+            {CATS.map((c) => (
+              <div className="serviceCard2" key={c.title}>
+                <div className="serviceHead">
+                  <div className="serviceIcon2">{c.icon}</div>
+                  <div className="serviceTitle2">{c.title}</div>
+                </div>
+
+                <ul className="serviceList">
+                  {c.items.map((it) => <li key={it}>{it}</li>)}
+                </ul>
+
+                <div className="muted small" style={{ marginTop: 10 }}>{c.hint}</div>
+
+                <div className="cta" style={{ marginTop: 12 }}>
+                  <button
+                    className="btn btnPrimary"
+                    type="button"
+                    onClick={() =>
+                      goRequest(c.prefill, {
+                        title: c.title,
+                        icon: c.icon,
+                        items: c.items,
+                        hint: c.hint,
+                      })
+                    }
+                  >
+                    Оставить заявку по теме
+                  </button>
+
+                  <button
+                    className="btn btnGhost"
+                    type="button"
+                    onClick={() =>
+                      goRequest(`${c.prefill}Нужна консультация. `, {
+                        title: c.title,
+                        icon: c.icon,
+                        items: c.items,
+                        hint: c.hint,
+                      })
+                    }
+                  >
+                    Нужна консультация
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="quickCtaRow">
-            <button
-              className="btn btnPrimary"
-              type="button"
-              onClick={() => goRequest("", { title: "Заявка", hint: "Укажите модель и симптомы — и мы перезвоним." })}
-            >
-              Оставить заявку
-            </button>
-
-            <span className="muted small">или выберите категорию ниже</span>
+          <div className="card" style={{ marginTop: 12 }}>
+            <div className="cardTitle">Как написать, чтобы мы ответили быстрее</div>
+            <ul className="miniList">
+              <li><b>Модель</b> устройства (или фото шильдика)</li>
+              <li><b>Симптомы</b>: что происходит, горит ли индикатор, есть ли звук/картинка</li>
+              <li><b>После чего началось</b>: обновление, падение, залитие, скачок напряжения</li>
+            </ul>
           </div>
         </div>
-
-        {/* PHOTO BANNER */}
-        <div className="photoBanner photoBannerServices" aria-label="Сервисный ремонт">
-          <img
-            className="photoBannerImg"
-            src="/img/banner-services.webp"
-            alt="Мастер аккуратно ремонтирует электронику"
-            loading="lazy"
-          />
-          <div className="photoBannerOverlay">
-            <div className="photoBannerTitle">Диагностика → варианты → согласование</div>
-            <div className="photoBannerText">Понятно объясним и назовём цену до начала работ.</div>
-          </div>
-        </div>
-
-        <div className="servicesGrid">
-          {CATS.map((c) => (
-            <div className="serviceCard2" key={c.title}>
-              <div className="serviceHead">
-                <div className="serviceIcon2">{c.icon}</div>
-                <div className="serviceTitle2">{c.title}</div>
-              </div>
-
-              <ul className="serviceList">
-                {c.items.map((it) => (
-                  <li key={it}>{it}</li>
-                ))}
-              </ul>
-
-              <div className="muted small" style={{ marginTop: 10 }}>
-                {c.hint}
-              </div>
-
-              <div className="cta" style={{ marginTop: 12 }}>
-                <button
-                  className="btn btnPrimary"
-                  type="button"
-                  onClick={() =>
-                    goRequest(c.prefill, {
-                      title: c.title,
-                      icon: c.icon,
-                      items: c.items,
-                      hint: c.hint,
-                    })
-                  }
-                >
-                  Оставить заявку по теме
-                </button>
-
-                <button
-                  className="btn btnGhost"
-                  type="button"
-                  onClick={() =>
-                    goRequest(`${c.prefill}Нужна консультация. `, {
-                      title: c.title,
-                      icon: c.icon,
-                      items: c.items,
-                      hint: c.hint,
-                    })
-                  }
-                >
-                  Нужна консультация
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="card" style={{ marginTop: 12 }}>
-          <div className="cardTitle">Как написать, чтобы мы ответили быстрее</div>
-          <ul className="miniList">
-            <li><b>Модель</b> устройства (или фото шильдика)</li>
-            <li><b>Симптомы</b>: что происходит, горит ли индикатор, есть ли звук/картинка</li>
-            <li><b>После чего началось</b>: обновление, падение, залитие, скачок напряжения</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 }
