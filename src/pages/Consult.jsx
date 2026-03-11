@@ -177,7 +177,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
 
         <div className="consultBreak" aria-hidden="true">
           <div className="consultBreakCard">
-            <div className="consultBreakOverlay">
+            <div className="consultInlinePhotoText">
               <div className="consultBreakTitle">Объясним без лишней терминологии</div>
               <div className="consultBreakText"></div>
             </div>
