@@ -10,8 +10,8 @@ export default function Footer({ phone, tg, wa }) {
       <div className="wrap footerBarInner">
         {/* слева: как работаем */}
         <div className="footerLeft">
-          <Link className="footerLink" to="/#about">
-            Как работаем
+          <Link className="footerLink" to="/reviews">
+            Отзывы
           </Link>
         </div>
 
@@ -29,7 +29,7 @@ export default function Footer({ phone, tg, wa }) {
 
         {/* справа: копирайт */}
         <div className="footerRight muted">
-          © {new Date().getFullYear()} Сергей — сервис
+          © 2016 Алгоритм - сервис
         </div>
       </div>
     </footer>

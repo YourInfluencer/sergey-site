@@ -92,20 +92,19 @@ export default function Prices() {
 
           <div className="priceGrid">
             <div className="priceCard priceCardHighlight">
-              <div className="priceName">Консультация по телефону и в мессенджере</div>
-              <div className="priceFrom">Бесплатно!</div>
+              <div className="priceName">Консультация</div>
+              <div className="priceFrom">Бесплатно</div>
               <div className="muted small">
-                Консультация по телефону и в мессенджере — бесплатно. Напишите модель и симптомы — подскажем варианты и
-                ориентир по стоимости.
+                Бесплатная консультация. Напишите модель и симптомы, перезвоним и дадим рекомендации.
               </div>
             </div>
 
             <div className="priceCard">
               <div className="priceName">Выезд + диагностика</div>
-              <div className="priceFrom">от 1 500 ₽</div>
+              <div className="priceFrom">Бесплатно</div>
               <div className="muted small">
-                Приезд мастера и первичная проверка <b>без вскрытия устройства</b>: уточняем симптомы и называем варианты
-                решения/стоимости.
+                Если выполняем ремонт — выезд и диагностика бесплатны.
+                Если нужна только диагностика/выезд без ремонта — 1500 ₽.
               </div>
             </div>
 
@@ -119,9 +118,9 @@ export default function Prices() {
 
             <div className="priceCard">
               <div className="priceName">Ремонт / замена деталей</div>
-              <div className="priceFrom">от 3 000 ₽</div>
+              <div className="priceFrom">от 2 000 ₽</div>
               <div className="muted small">
-                Замена комплектующих, ремонт разъёмов/питания, восстановление после залития (по ситуации).
+                Замена комплектующих, ремонт разъёмов/питания, восстановление после залития и прочее.
               </div>
             </div>
           </div>
@@ -137,7 +136,7 @@ export default function Prices() {
               />
               <div className="photoBannerOverlay">
                 <div className="photoBannerTitle">Цену согласуем до начала работ</div>
-                <div className="photoBannerText">Сразу называем варианты и стоимость — без “внезапных” доплат.</div>
+                <div className="photoBannerText"></div>
               </div>
             </div>
           </div>
@@ -160,8 +159,7 @@ export default function Prices() {
                 </li>
               </ul>
               <p className="muted small" style={{ marginTop: 10 }}>
-                Мы не делаем “втихаря”. Если по ходу диагностики появляются варианты — объясняем и согласуем до
-                продолжения.
+              
               </p>
             </div>
           </div>
@@ -170,8 +168,8 @@ export default function Prices() {
             <div className="card priceNote">
               <div className="priceNoteTitle">Важно про цены</div>
               <p className="muted" style={{ margin: 0 }}>
-                Не гонитесь за слишком низкой ценой у «мастеров» и на сайтах. Нередко за этим стоят скрытые доплаты и
-                недомолвки, а итоговый счёт получается выше ожидаемого. Мы предлагаем честную среднюю цену по рынку и
+                Не гонитесь за слишком низкой ценой, многие "мастера" при первичном обращении ориентируют на стоимость от 500 ₽. Нередко за этим стоят скрытые доплаты и
+                недомолвки, а итоговый счёт получается на много выше ожидаемого. Мы предлагаем честную среднюю цену по рынку и
                 качество, которое зарекомендовало себя годами.
               </p>
             </div>
@@ -181,31 +179,47 @@ export default function Prices() {
             <div className="card">
               <div className="cardTitle">Популярные работы (ориентиры)</div>
               <div className="row">
-                <span>Установка/настройка Windows + базовый набор программ</span>
-                <b>от 3 000 ₽</b>
+                <span>Установка Windows XP / 7 / 8 / 10 / 11 </span>
+                <b>от 1 000 ₽</b>
               </div>
               <div className="row">
-                <span>Чистка ноутбука + термопаста (если требуется)</span>
+                <span>Установка дистрибутивов Linux (Ubuntu / MacOS) </span>
                 <b>от 2 000 ₽</b>
               </div>
               <div className="row">
-                <span>Подключение принтера/МФУ, настройка печати/сканирования</span>
+                <span>Обучение (ПК грамотность / Интернет безопасность / Работе с программами и устройствами)</span>
+                <b>от 800 ₽</b>
+              </div>
+              <div className="row">
+                <span>Базовый набор программ (Архиватор / браузер / Плеер)</span>
+                <b>от 900 ₽</b>
+              </div>
+              <div className="row">
+                <span>Пакет офисных программ</span>
+                <b>от 1 200 ₽</b>
+              </div>
+              <div className="row">
+                <span>Чистка ноутбука от пыли</span>
                 <b>от 1 500 ₽</b>
               </div>
               <div className="row">
-                <span>Настройка Wi-Fi/роутера, устранение “пропадает интернет”</span>
+                <span>Подключение принтера/МФУ, настройка печати / сканирования</span>
                 <b>от 1 500 ₽</b>
+              </div>
+              <div className="row">
+                <span>Настройка Wi-Fi/роутера</span>
+                <b>от 1 100 ₽</b>
               </div>
               <div className="row">
                 <span>Телевизор: настройка Smart TV / приложений / приставки</span>
-                <b>от 1 500 ₽</b>
+                <b>от 1 000 ₽</b>
               </div>
               <div className="row">
                 <span>Телевизор: диагностика “нет изображения / не включается”</span>
-                <b>от 1 500 ₽</b>
+                <b>от 1 000 ₽</b>
               </div>
               <p className="muted small" style={{ marginTop: 10 }}>
-                Это ориентиры. Иногда проблема решается быстро, а иногда нужна диагностика и варианты.
+                Это ориентиры. Иногда проблема решается быстро, а иногда нужна сложная диагностика.
               </p>
             </div>
           </div>
@@ -213,7 +227,7 @@ export default function Prices() {
           <div className="section" style={{ paddingTop: 0 }}>
             <div className="card pricesLeadCard">
               <div className="cardTitle">Оставьте заявку — мы перезвоним</div>
-              <p className="muted">Напишите модель и что случилось — мы скажем варианты и примерную вилку цены.</p>
+              <p className="muted">Напишите модель и что случилось — мы перезвоним и дадим консультацию.</p>
 
               <form className="leadForm" onSubmit={submit}>
                 <input className="input" name="name" placeholder="Имя" autoComplete="name" />
@@ -239,10 +253,10 @@ export default function Prices() {
               <div className="cardTitle">Как подготовиться, чтобы мы помогли быстрее</div>
               <ul className="miniList">
                 <li>
-                  Напишите <b>модель</b> (или фото шильдика) и <b>симптомы</b>.
+                  Напишите <b>модель</b> (или фото модели с наклейки на обратной стороне устройства) и <b>симптомы</b>.
                 </li>
-                <li>Если ТВ/монитор — скажите: есть ли звук, реагирует ли на пульт, мигает ли индикатор.</li>
-                <li>Если ПК/ноут — скажите: включается ли, есть ли картинка, что менялось “до” (обновления/падение/залитие).</li>
+                <li>Если ТВ/монитор — сообщите: есть ли звук, реагирует ли на пульт, мигает ли индикатор.</li>
+                <li>Если ПК/ноут — сообщите: включается ли, есть ли картинка, что менялось до неисправности (обновление/падение/залитие).</li>
               </ul>
             </div>
           </div>

@@ -41,7 +41,7 @@ const CATS = [
       "Windows, драйверы, программы, вирусы",
       "апгрейд: SSD/ОЗУ, перенос данных",
     ],
-    hint: "По возможности: модель + что было “до” (обновление, падение, залитие).",
+    hint: "По возможности укажите модель и после чего возникла проблема.",
     prefill: "Компьютеры/ноутбуки: ",
   },
   {
@@ -53,7 +53,7 @@ const CATS = [
       "подключение к ПК, драйверы",
       "Wi-Fi, печать по сети",
     ],
-    hint: "Лучше сразу назвать модель (например: HP M111a / Epson L3250).",
+    hint: "По возможности укажите модель (например: HP M111a / Epson L3250).",
     prefill: "Принтер/МФУ: ",
   },
   {
@@ -77,7 +77,7 @@ const CATS = [
       "запись, уведомления, доступ извне",
       "сеть, IP-адреса, стабильность",
     ],
-    hint: "Уточните: сколько камер и где нужно смотреть (телефон/ПК).",
+    hint: "Уточните: сколько камер и с какого устройства просматривается.",
     prefill: "IP-камеры: ",
   },
   {
@@ -128,7 +128,7 @@ export default function Services() {
                   onClick={() =>
                     goRequest(q.prefill, {
                       title: q.cat,
-                      hint: "Напишите модель и симптомы — так мы быстрее скажем варианты.",
+                      hint: "Напишите модель и симптомы",
                     })
                   }
                 >
@@ -158,8 +158,8 @@ export default function Services() {
               loading="lazy"
             />
             <div className="photoBannerOverlay">
-              <div className="photoBannerTitle">Диагностика → варианты → согласование</div>
-              <div className="photoBannerText">Понятно объясним и назовём цену до начала работ.</div>
+              <div className="photoBannerTitle">Диагностика → пути решения → согласование</div>
+              <div className="photoBannerText"></div>
             </div>
           </div>
 
@@ -213,7 +213,7 @@ export default function Services() {
           </div>
 
           <div className="card" style={{ marginTop: 12 }}>
-            <div className="cardTitle">Как написать, чтобы мы ответили быстрее</div>
+            <div className="cardTitle">Если укажете следующее, то консультация будет точнее:</div>
             <ul className="miniList">
               <li><b>Модель</b> устройства (или фото шильдика)</li>
               <li><b>Симптомы</b>: что происходит, горит ли индикатор, есть ли звук/картинка</li>

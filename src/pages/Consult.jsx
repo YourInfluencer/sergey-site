@@ -23,7 +23,7 @@ const CHECKLIST = [
   "После чего началось (обновление/падение/залитие/скачок)",
   "Есть ли звук/картинка/индикатор",
   "Что уже пробовали",
-  "Адрес (куда приехать) и когда удобно",
+  
 ];
 
 function safeCopy(text) {
@@ -111,7 +111,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
       <div className="wrap">
         <h1 className="pageTitle">Консультация</h1>
         <p className="muted">
-          Быстрее всего отвечаем, когда есть <b>модель</b>, <b>симптомы</b> и <b>после чего началось</b>.
+          Консультация будет точнее, когда есть <b>модель</b>, <b>симптомы</b> и <b>после чего началось</b>.
         </p>
 
         <div className="consultTop">
@@ -153,7 +153,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
           </div>
 
           <div className="card consultQuick">
-            <div className="cardTitle">Частые ситуации (1 клик)</div>
+            <div className="cardTitle">Частые ситуации (Шаблоны)</div>
 
             <div className="quickList">
               {QUICK.map((q) => (
@@ -178,15 +178,15 @@ export default function Consult({ tg, wa, onOpenContacts }) {
         <div className="consultBreak" aria-hidden="true">
           <div className="consultBreakCard">
             <div className="consultBreakOverlay">
-              <div className="consultBreakTitle">Объясним просто и без лишних сложностей</div>
-              <div className="consultBreakText">Подскажем, что делать дальше, и договоримся по времени.</div>
+              <div className="consultBreakTitle">Объясним без лишней терминологии</div>
+              <div className="consultBreakText"></div>
             </div>
           </div>
         </div>
 
         <div className="consultBottom">
           <div className="card">
-            <div className="cardTitle">Что мы уточним</div>
+            <div className="cardTitle">Что желательно сообщить</div>
             <div className="checkList">
               {CHECKLIST.map((x) => (
                 <div key={x} className="checkItem">
@@ -201,7 +201,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
             <div className="card">
               <div className="cardTitle">Если не хотите писать</div>
               <p className="muted" style={{ marginTop: 0 }}>
-                Просто нажмите “Контакты” — мы подскажем по телефону и договоримся по времени.
+                Просто нажмите “Контакты” — проконсультируем по телефону.
               </p>
 
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
@@ -213,7 +213,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
                 <div className="consultInlinePhotoOverlay" />
                 <div className="consultInlinePhotoText">
                   <div className="consultInlinePhotoTitle">Можно просто позвонить</div>
-                  <div className="consultInlinePhotoSub">Быстро уточним детали и подскажем по цене</div>
+                  <div className="consultInlinePhotoSub"></div>
                 </div>
               </div>
 

@@ -208,7 +208,7 @@ export default function Reviews({ onLeadSubmit }) {
       <div className="wrap">
         <h1 className="pageTitle">Отзывы</h1>
         <p className="muted">
-          Спасибо клиентам за доверие. Мы публикуем отзывы после проверки (чтобы не было спама).
+          Спасибо вам за доверие. Отзыв появляется после проверки (чтобы не было спама).
         </p>
 
         <div className="reviewsGrid">
@@ -233,7 +233,7 @@ export default function Reviews({ onLeadSubmit }) {
           <div className="card reviewFormCard">
             <div className="cardTitle">Оставьте отзыв</div>
             <p className="muted" style={{ marginTop: 0 }}>
-              Имя и телефон нужны для проверки. На странице телефон не публикуем.
+              Имя и телефон нужны для проверки. На странице телефон не публикуется.
             </p>
 
             <form
@@ -251,7 +251,7 @@ export default function Reviews({ onLeadSubmit }) {
               <textarea
                 className="input reviewTextarea"
                 name="text"
-                placeholder="Ваш отзыв (что сделали, как по цене/срокам, всё ли устроило)"
+                placeholder="Ваш отзыв (что сделали, всё ли устроило)"
                 rows={5}
                 required
               />
@@ -281,8 +281,8 @@ export default function Reviews({ onLeadSubmit }) {
         {/* IMAGE BREAK (между отзывом и синей стрелкой) */}
         <div className="reviewsBreakImg" aria-hidden="true">
           <div className="reviewsBreakText">
-            <div className="reviewsBreakTitle">Спасибо за доверие</div>
-            <div className="reviewsBreakSub">Спасибо, что выбираете нас</div>
+            <div className="reviewsBreakTitle">Спасибо, что выбираете нас</div>
+            <div className="reviewsBreakSub"></div>
           </div>
         </div>
 

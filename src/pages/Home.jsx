@@ -75,7 +75,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
         <div className="wrap heroGrid">
           <div>
             <h1>Ремонт техники во Владивостоке</h1>
-            <p className="muted">Быстро и понятно: выезд • согласование цены до работ • гарантия.</p>
+            <p className="muted">Быстро и понятно: выезд • диагностика • согласование цены • гарантия</p>
 
             <div className="cta">
               <button className="btn btnPrimary" type="button" onClick={onOpenContacts}>
@@ -87,18 +87,18 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
             <div className="miniInfo">
               <span className="pill">Цена до начала работ</span>
-              <span className="pill">Выезд по городу</span>
+              <span className="pill">Оперативный выезд</span>
               <span className="pill">Гарантия</span>
               <span className="pill">Без скрытых доплат</span>
             </div>
 
             <div className="freeConsult">
               <span className="freeConsultIcon">💬</span>
-              <span><b>Консультация по телефону и в мессенджере — бесплатно!</b></span>
+              <span><b>Бесплатная консультация  круглосуточно!</b></span>
             </div>
 
             {/* микро-SEO / доверие */}
-            <p className="muted small" style={{ marginTop: 10 }}>
+            <p className="muted teleph" style={{ marginTop: 10 }}>
               Телефон:{" "}
               <a className="footerLink" href={`tel:${phoneHref}`}>{phone}</a>{" "}
               •{" "}
@@ -106,6 +106,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
               •{" "}
               <a className="footerLink" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
             </p>
+
           </div>
 
           {/* HERO справа */}
@@ -113,7 +114,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             <div className="heroMediaCard">
               <div>
                 <div className="heroMediaTitle">Оставьте заявку — мы перезвоним</div>
-                <div className="muted small">Или выберите устройство ниже — подставим подсказки в заявку.</div>
+                <div className="muted small">Или выберите устройство ниже</div>
 
                 <div className="heroSteps">
                   <div className="heroStep"><span className="heroStepNum">1</span>Выберите устройство</div>
@@ -159,7 +160,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       <section className="section">
         <div className="wrap">
           <h2>Выберите устройство</h2>
-          <p className="muted">Нажмите на плитку — откроется заявка с подсказками.</p>
+          <p className="muted">Выберите устройство — откроется форма заявки с подсказками.</p>
 
           <div className="deviceGrid">
             {tiles.map((t) => (
@@ -185,7 +186,7 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
                   />
                 </div>
 
-                <div className="muted small deviceSub">Откроем форму с подсказками</div>
+                <div className="muted small deviceSub"></div>
               </button>
             ))}
           </div>
@@ -205,20 +206,20 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <div className="trustGrid">
             <div className="trustCard">
               <img className="trustImg" src="/img/trust-1.webp" alt="" loading="lazy" />
-              <div className="trustTitle">Цена заранее</div>
-              <div className="trustText">Согласуем стоимость до начала работ.</div>
+              <div className="trustTitle">Более 10 лет в сфере</div>
+              <div className="trustText">Около 120 тысяч довольных клиентов.</div>
             </div>
 
             <div className="trustCard">
               <img className="trustImg" src="/img/trust-2.webp" alt="" loading="lazy" />
-              <div className="trustTitle">Понятно</div>
-              <div className="trustText">Объясняем простыми словами — без “умных” слов.</div>
+              <div className="trustTitle">Доступность</div>
+              <div className="trustText">Объясняем простыми словами — без “сложных” терминов.</div>
             </div>
 
             <div className="trustCard">
               <img className="trustImg" src="/img/trust-3.webp" alt="" loading="lazy" />
               <div className="trustTitle">Гарантия</div>
-              <div className="trustText">На выполненные работы предоставляем гарантию.</div>
+              <div className="trustText">На выполненные работы предоставляем гарантию до 2-х лет.</div>
             </div>
           </div>
         </div>
@@ -227,8 +228,8 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       {/* GALLERY */}
       <section className="section">
         <div className="wrap">
-          <h2>Как мы работаем</h2>
-          <p className="muted">Несколько реальных фото процесса.</p>
+          <h2>Несколько фото процесса работ</h2>
+          <p className="muted"></p>
 
           <div className="photoGrid">
             {["1","2","3","4","5","6"].map((n) => (
@@ -243,32 +244,33 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
       {/* ABOUT + FAQ */}
       <section className="section" id="about">
         <div className="wrap">
-          <h2>Как работаем и ответы на вопросы</h2>
+          <h2>Частые вопросы</h2>
 
           <div className="faq">
             <details className="faqItem" open>
               <summary>Как мы работаем</summary>
               <div className="steps" style={{ marginTop: 10 }}>
-                <div className="step"><div className="stepNum">1</div><div><div className="stepTitle">Заявка</div><div className="muted">Уточняем модель и симптомы.</div></div></div>
-                <div className="step"><div className="stepNum">2</div><div><div className="stepTitle">Диагностика</div><div className="muted">Понимаем причину и предлагаем варианты.</div></div></div>
-                <div className="step"><div className="stepNum">3</div><div><div className="stepTitle">Согласование</div><div className="muted">Цена до начала работ — без сюрпризов.</div></div></div>
-                <div className="step"><div className="stepNum">4</div><div><div className="stepTitle">Решаем</div><div className="muted">Ремонт/настройка + проверка результата.</div></div></div>
+                <div className="step"><div className="stepNum">1</div><div><div className="stepTitle">Обращение</div><div className="muted">Уточняем модель и симптомы.</div></div></div>
+                <div className="step"><div className="stepNum">2</div><div><div className="stepTitle">Выезд</div><div className="muted">В течение 1–2 часов (зависит от района).</div></div></div>
+                <div className="step"><div className="stepNum">3</div><div><div className="stepTitle">Диагностика</div><div className="muted">Устанавливаем причину и предлагаем варианты решения.</div></div></div>
+                <div className="step"><div className="stepNum">4</div><div><div className="stepTitle">Согласование</div><div className="muted">Цена оговаривается до начала работ.</div></div></div>
+                <div className="step"><div className="stepNum">5</div><div><div className="stepTitle">Решаем задачу</div><div className="muted">Ремонт/настройка + проверка результата.</div></div></div>
               </div>
             </details>
 
             <details className="faqItem">
               <summary>Сколько стоит ремонт?</summary>
-              <p className="muted">Точная цена понятна после диагностики. Мы называем стоимость до начала работ.</p>
+              <p className="muted">Точная цена известна после диагностики. Сориентируем по стоимости до начала работ.</p>
             </details>
 
             <details className="faqItem">
               <summary>Выезд на дом или в сервис?</summary>
-              <p className="muted">Многие задачи решаем на месте. Если нужен сложный ремонт — согласуем вариант.</p>
+              <p className="muted">Многие задачи решаем за один визит. Если ремонт сложный — предложим варианты решения.</p>
             </details>
 
             <details className="faqItem">
               <summary>Можно просто консультацию?</summary>
-              <p className="muted"><b>Да — бесплатно.</b> Напишите модель и симптомы, подскажем варианты.</p>
+              <p className="muted"><b>Да, консультация бесплатна.</b> Напишите модель и симптомы, перезвоним и дадим рекомендации.</p>
             </details>
           </div>
 

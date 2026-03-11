@@ -21,7 +21,7 @@ export default function RequestPage({ onLeadSubmit }) {
   const [result, setResult] = useState("");
 
   const title = state.title || "Заявка";
-  const hint = state.hint || "Совет: укажите модель и симптомы — так мы быстрее скажем варианты.";
+  const hint = state.hint || "Совет: укажите модель и симптомы.";
   const icon = state.icon || "🛠️";
   const items = Array.isArray(state.items) ? state.items : null;
 
@@ -75,8 +75,6 @@ export default function RequestPage({ onLeadSubmit }) {
     }
   }
 
-  const canonical = "https://yourinfluencer.github.io/#/request";
-
   return (
     <>
     <Seo
@@ -129,9 +127,9 @@ export default function RequestPage({ onLeadSubmit }) {
 
         {/* Форма */}
         <div className="card" id="form">
-          <div className="cardTitle">Оставьте контакты — мы перезвоним</div>
+          <div className="cardTitle">Оставить заявку на обратный звонок</div>
           <p className="muted" style={{ marginTop: 0 }}>
-            Напишите модель и симптомы — так мы быстрее поймём ситуацию и скажем варианты.
+            Напишите модель и симптомы — так мы быстрее поймём ситуацию и поможем вам.
           </p>
 
           <form className="leadForm requestForm" onSubmit={submit}>
