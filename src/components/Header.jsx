@@ -44,8 +44,8 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
           <Link className="navLink" to="/prices">Цены</Link>
           <Link className="navLink" to="/reviews">Отзывы</Link>
           <Link className="navLink" to="/consult">Консультация</Link>
-          <Link className="btn btnPrimary" to="/request">Вызвать мастера</Link>
-          <button className="btn btnGhost headerContactsBtn" type="button" onClick={onOpenContacts}>
+          <Link className="btn btnGhost headerActionBtn" to="/request">Вызвать мастера</Link>
+          <button className="btn btnGhost headerActionBtn" type="button" onClick={onOpenContacts}>
             Контакты
           </button>
         </nav>
@@ -54,7 +54,7 @@ export default function Header({ theme, onToggleTheme, onOpenContacts }) {
           <button className="btn btnGhost" type="button" onClick={() => setMenuOpen((v) => !v)}>
             Меню
           </button>
-          <button className="btn btnGhost headerContactsBtn" type="button" onClick={onOpenContacts}>
+          <button className="btn btnGhost" type="button" onClick={onOpenContacts}>
             Контакты
           </button>
         </div>

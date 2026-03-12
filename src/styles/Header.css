@@ -234,3 +234,10 @@
   border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
 }
 
+.headerActionBtn{
+  min-width: 144px;
+  min-height: 45px;
+  font-size: 14px;
+  justify-content: center;
+  text-align: center;
+}

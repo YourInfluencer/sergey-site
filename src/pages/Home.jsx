@@ -480,10 +480,10 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             <p className="muted">Быстро и понятно: выезд • диагностика • согласование цены • гарантия</p>
 
             <div className="cta">
-              <button className="btn btnGhost heroCallBtn" type="button" onClick={onOpenContacts}>
+              <button className="btn btnPrimary headerActionBtn" type="button" onClick={onOpenContacts}>
                 Вызвать мастера
               </button>
-              <Link className="btn btnGhost" to="/services">
+              <Link className="btn btnGhost " to="/services">
                 Услуги
               </Link>
               <Link className="btn btnGhost" to="/prices">
@@ -543,10 +543,10 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
               </div>
 
               <div className="heroRightCta" style={{ marginTop: 12 }}>
-                <button className="btn btnPrimary" type="button" onClick={scrollToDevices}>
+                <button className="btn btnGhost headerActionBtn" type="button" onClick={scrollToDevices}>
                   К устройствам
                 </button>
-                <Link className="btn btnGhost" to="/prices">
+                <Link className="btn btnGhost headerActionBtn" to="/prices">
                   Посмотреть цены
                 </Link>
               </div>
