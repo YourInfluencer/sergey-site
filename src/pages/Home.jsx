@@ -667,9 +667,28 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
           <p className="muted"></p>
 
           <div className="photoGrid">
-            {["1", "2", "3", "4", "5", "6"].map((n) => (
-              <a key={n} className="photoTile" href={`/img/gallery-${n}.webp`} target="_blank" rel="noreferrer">
-                <img className="photoImg" src={`/img/gallery-${n}.webp`} alt="" loading="lazy" />
+            {[
+              { id: "1", label: "Открыть фото ремонта платы" },
+              { id: "2", label: "Открыть фото процесса пайки платы" },
+              { id: "3", label: "Открыть фото настройки роутера" },
+              { id: "4", label: "Открыть фото ремонта принтера" },
+              { id: "5", label: "Открыть фото установки камеры" },
+              { id: "6", label: "Открыть фото ремонта ноутбука" },
+            ].map((item) => (
+              <a
+                key={item.id}
+                className="photoTile"
+                href={`/img/gallery-${item.id}.webp`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={item.label}
+              >
+                <img
+                  className="photoImg"
+                  src={`/img/gallery-${item.id}.webp`}
+                  alt=""
+                  loading="lazy"
+                />
               </a>
             ))}
           </div>
