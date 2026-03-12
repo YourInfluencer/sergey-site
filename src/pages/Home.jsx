@@ -501,20 +501,25 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
             </div>
 
             {/* микро-SEO / доверие */}
-            <p className="muted teleph" style={{ marginTop: 10 }}>
-              Телефон:{" "}
-              <a className="footerLink" href={`tel:${phoneHref}`}>
+            <div className="heroContactsLine">
+              <span className="heroContactsLabel">Телефон:</span>
+
+              <a className="heroPhoneLink" href={`tel:${phoneHref}`}>
                 {phone}
-              </a>{" "}
-              •{" "}
-              <a className="footerLink" href={tg} target="_blank" rel="noreferrer">
+              </a>
+
+              <span className="heroDot">•</span>
+
+              <a className="heroSocialLink" href={tg} target="_blank" rel="noreferrer">
                 Telegram
-              </a>{" "}
-              •{" "}
-              <a className="footerLink" href={wa} target="_blank" rel="noreferrer">
+              </a>
+
+              <span className="heroDot">•</span>
+
+              <a className="heroSocialLink" href={wa} target="_blank" rel="noreferrer">
                 WhatsApp
               </a>
-            </p>
+            </div>
           </div>
 
           {/* HERO справа */}

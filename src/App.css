@@ -323,3 +323,25 @@ textarea.input{
   h2{font-size:20px}
   .card{padding:14px}
 }
+
+@media (max-width: 1024px) {
+  .cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .cta .btn,
+  .cta a.btn,
+  .cta button.btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1.1;
+    font-size: 14px;
+  }
+}

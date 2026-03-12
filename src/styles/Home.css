@@ -506,10 +506,6 @@
   .photoImg{ height: 200px; }
 }
 
-.teleph{
-  font-size: 24px;
-}
-
 /* =========================
    BENEFITS (marquee tiles)
    ========================= */
@@ -641,4 +637,90 @@
 }
 @media (max-width: 520px){
   .benefitsMarquee{ padding: 2px 24px; }
+}
+
+@media (max-width: 1024px) {
+  .hero .cta .heroCallBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .hero .cta .heroCallBtn:hover,
+  .hero .cta .heroCallBtn:focus {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero .cta .heroCallBtn {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .hero .cta .heroCallBtn:hover,
+  .hero .cta .heroCallBtn:focus {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+}
+
+.heroContactsLine{
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.heroContactsLabel{
+  color: var(--text);
+  opacity: .9;
+  font-weight: 500;
+}
+
+.heroPhoneLink,
+.heroSocialLink{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.heroPhoneLink:hover,
+.heroSocialLink:hover{
+  opacity: .9;
+}
+
+.heroDot{
+  opacity: .5;
+  font-weight: 700;
+}
+
+@media (max-width: 768px){
+  .heroContactsLine{
+    font-size: 20px;
+    gap: 4px 8px;
+  }
+}
+
+@media (max-width: 520px){
+  .heroContactsLine{
+    font-size: 17px;
+    line-height: 1.3;
+  }
 }
