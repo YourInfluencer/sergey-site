@@ -29,6 +29,10 @@ function digitsOnly(s) {
 export default function App() {
   const [theme, setThemeState] = useState(getTheme());
 
+  const [showSideDecor, setShowSideDecor] = useState(() =>
+  typeof window !== "undefined" ? window.matchMedia("(min-width: 1100px)").matches : false
+);
+
   const [isContactsOpen, setIsContactsOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "" });
   const [sentText, setSentText] = useState("");
@@ -40,6 +44,21 @@ export default function App() {
   const location = useLocation();
 
   useEffect(() => setTheme(theme), [theme]);
+
+  useEffect(() => {
+  const media = window.matchMedia("(min-width: 1100px)");
+
+  const update = () => setShowSideDecor(media.matches);
+  update();
+
+  if (media.addEventListener) {
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }
+
+  media.addListener(update);
+  return () => media.removeListener(update);
+}, []);
 
   // скролл наверх при смене страницы
   useEffect(() => {
@@ -165,8 +184,8 @@ export default function App() {
 
       <div className="appMain">
         <div className="pageFrame">
-          <div className="sideDecor sideDecorLeft" aria-hidden="true" />
-          <div className="sideDecor sideDecorRight" aria-hidden="true" />
+          {showSideDecor && <div className="sideDecor sideDecorLeft" aria-hidden="true" />}
+          {showSideDecor && <div className="sideDecor sideDecorRight" aria-hidden="true" />}
 
           <div className="pageContent">
             <Routes>
