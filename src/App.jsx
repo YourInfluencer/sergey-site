@@ -193,14 +193,14 @@ export default function App() {
                 path="/"
                 element={
                   <main>
-                    <Home phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} onOpenContacts={openContacts} />
+                    <Home phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} max={CFG.max} onOpenContacts={openContacts} />
                   </main>
                 }
               />
               <Route path="/services" element={<main><Services /></main>} />
               <Route path="/prices" element={<Prices />} />
               <Route path="/reviews" element={<main><Reviews onLeadSubmit={onLeadSubmit} /></main>} />
-              <Route path="/consult" element={<main><Consult tg={CFG.tg} wa={CFG.wa} onOpenContacts={openContacts} /></main>} />
+              <Route path="/consult" element={<main><Consult tg={CFG.tg} wa={CFG.wa} max={CFG.max} onOpenContacts={openContacts} /></main>} />
               <Route path="/request" element={<main><RequestPage onLeadSubmit={onLeadSubmit} /></main>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -208,7 +208,7 @@ export default function App() {
         </div>
       </div>
 
-      <Footer phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} />
+      <Footer phone={CFG.phone} tg={CFG.tg} wa={CFG.wa} max={CFG.max} />
 
       {isContactsOpen && (
         <div className="modalOverlay" role="dialog" aria-modal="true" onMouseDown={closeContacts}>
@@ -224,6 +224,7 @@ export default function App() {
               <a className="contactLink" href={`tel:${digitsOnly(CFG.phone)}`}>{CFG.phone}</a>
               <a className="contactLink" href={CFG.tg} target="_blank" rel="noreferrer">Telegram</a>
               <a className="contactLink" href={CFG.wa} target="_blank" rel="noreferrer">WhatsApp</a>
+              <a className="contactLink" href={CFG.max} target="_blank" rel="noreferrer">MAX</a>
             </div>
 
             <div className="orDivider">

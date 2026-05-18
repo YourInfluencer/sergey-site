@@ -382,7 +382,7 @@ function BenefitsMarquee({ items, speedSec = 28 }) {
   );
 }
 
-export default function Home({ phone, tg, wa, onOpenContacts }) {
+export default function Home({ phone, tg, wa, max, onOpenContacts }) {
   const nav = useNavigate();
   const phoneHref = useMemo(() => digitsPhone(phone), [phone]);
 
@@ -518,6 +518,12 @@ export default function Home({ phone, tg, wa, onOpenContacts }) {
 
               <a className="heroSocialLink" href={wa} target="_blank" rel="noreferrer">
                 WhatsApp
+              </a>
+
+              <span className="heroDot">•</span>
+
+              <a className="heroSocialLink" href={max} target="_blank" rel="noreferrer">
+                MAX
               </a>
             </div>
           </div>

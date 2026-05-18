@@ -4,7 +4,7 @@ function digitsPhone(phone) {
   return String(phone || "").replace(/[^\d+]/g, "");
 }
 
-export default function Footer({ phone, tg, wa }) {
+export default function Footer({ phone, tg, wa, max }) {
   return (
     <footer className="footer footerBar" role="contentinfo">
       <div className="wrap footerBarInner">
@@ -24,6 +24,8 @@ export default function Footer({ phone, tg, wa }) {
             <a className="footerLink" href={tg} target="_blank" rel="noreferrer">Telegram</a>
             <span className="sep" aria-hidden="true" />
             <a className="footerLink" href={wa} target="_blank" rel="noreferrer">WhatsApp</a>
+            <span className="sep" aria-hidden="true" />
+<a className="footerLink" href={max} target="_blank" rel="noreferrer">MAX</a>
           </div>
         </div>
 

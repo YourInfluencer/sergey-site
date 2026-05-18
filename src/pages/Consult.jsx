@@ -59,7 +59,7 @@ function applyPreset(prevText, preset) {
   return t;
 }
 
-export default function Consult({ tg, wa, onOpenContacts }) {
+export default function Consult({ tg, wa, max, onOpenContacts }) {
   const defaultTemplate = useMemo(
     () => `Здравствуйте!
 Устройство:
@@ -136,6 +136,10 @@ export default function Consult({ tg, wa, onOpenContacts }) {
 
               <a className="btn btnGhost" href={wa} target="_blank" rel="noreferrer">
                 WhatsApp
+              </a>
+
+              <a className="btn btnGhost" href={max} target="_blank" rel="noreferrer">
+                MAX
               </a>
 
               <button className="btn btnGhost" type="button" onClick={onOpenContacts}>
@@ -218,7 +222,7 @@ export default function Consult({ tg, wa, onOpenContacts }) {
               </div>
 
               <div className="muted small" style={{ marginTop: 10 }}>
-                Если удобнее — можно сразу отправить фото шильдика/экрана в Telegram или WhatsApp.
+                Если удобнее — можно сразу отправить фото шильдика/экрана в Telegram, WhatsApp или MAX.
               </div>
             </div>
           </div>
