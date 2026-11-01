@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import { appendFile } from "node:fs/promises";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -31,15 +32,49 @@ async function sendToTelegram(text) {
   const chatId = process.env.TG_CHAT_ID;
   if (!token || !chatId) throw new Error("Missing TG_BOT_TOKEN or TG_CHAT_ID");
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  const resp = await fetch(url, {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3000);
+
+  try {
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text }),
+      signal: controller.signal,
+    });
+
+    const data = await resp.json();
+    if (!data.ok) throw new Error(`Telegram error: ${JSON.stringify(data)}`);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function sendToVk(text) {
+  const token = process.env.VK_GROUP_TOKEN;
+  const peerId = process.env.VK_PEER_ID;
+  if (!token || !peerId) throw new Error("Missing VK_GROUP_TOKEN or VK_PEER_ID");
+
+  const params = new URLSearchParams();
+  params.set("access_token", token);
+  params.set("v", "5.199");
+  params.set("peer_id", peerId);
+  params.set("random_id", String(Date.now()));
+  params.set("message", text);
+
+  const resp = await fetch("https://api.vk.com/method/messages.send", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chat_id: chatId, text }),
+    body: params,
   });
 
   const data = await resp.json();
-  if (!data.ok) throw new Error(`Telegram error: ${JSON.stringify(data)}`);
+  if (data.error) throw new Error(`VK error: ${JSON.stringify(data.error)}`);
+  return data;
+}
+
+async function saveLeadToFile(lead) {
+  await appendFile("./leads.jsonl", JSON.stringify(lead, null, 0) + "\n", "utf8");
 }
 
 // ID: DDMMYYHHmm по Владивостоку (UTC+10)
@@ -131,7 +166,31 @@ app.post("/api/lead", async (req, res) => {
 
     if (comment) text += `Комментарий: ${comment}`;
 
-    await sendToTelegram(text);
+    const leadData = {
+      id: leadId,
+      createdAt: new Date().toISOString(),
+      createdAtVladivostok: leadId,
+      ip,
+      source: sourceRu,
+      sourceRaw,
+      name,
+      phone,
+      comment,
+      userAgent: req.headers["user-agent"] || "",
+    };
+
+    await saveLeadToFile(leadData);
+
+    try {
+      await sendToVk(text);
+      console.log("VK lead sent:", leadId);
+    } catch (vkErr) {
+      console.error("VK send error:", vkErr);
+    }
+
+    // Telegram с Timeweb сейчас недоступен, поэтому не блокируем заявку.
+    // Если позже заработает, можно включить обратно через try/catch:
+    // try { await sendToTelegram(text); } catch (tgErr) { console.error("Telegram send error:", tgErr); }
 
     rec.hits.push(now);
     rec.lastTs = now;
